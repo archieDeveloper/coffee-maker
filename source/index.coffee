@@ -1,3 +1,12 @@
+Vector2d = require './core/engine/class/vector2d'
+
+a = Vector2d 1, 3
+b = Vector2d 2, 1
+
+a.add b
+
+console.log a
+###
 window.object = {}
 window.sprite = {}
 
@@ -162,3 +171,4 @@ draw = ->
     }
 
 window.onload = loadImage
+###

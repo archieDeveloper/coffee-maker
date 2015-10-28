@@ -42,62 +42,53 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	var requestAnimFrame;
+	var Vector2d, a, b;
 
-	window.object = {};
+	Vector2d = __webpack_require__(1);
 
-	window.sprite = {};
+	a = Vector2d(1, 3);
 
-	requestAnimFrame = (function() {
-	  return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
-	    return window.setTimeout(callback, 1000 / 60);
-	  };
-	})();
+	b = Vector2d(2, 1);
+
+	a.add(b);
+
+	console.log(a);
 
 
 	/*
-	canvas = document.createElement("canvas");
-	window.canvas = canvas;
+	window.object = {}
+	window.sprite = {}
 
-	importJs = function (src, callback) {
-	    var script = document.createElement('script');
-	    script.src = './coffeeMaker/'+src+'.js';
-	    var newScript = document.getElementsByTagName('head')[0].appendChild(script);
-	    newScript.onload = callback;
-	};
+	requestAnimFrame = do ->
+	    return window.requestAnimationFrame    ||
+	        window.webkitRequestAnimationFrame ||
+	        window.mozRequestAnimationFrame    ||
+	        window.oRequestAnimationFrame      ||
+	        window.msRequestAnimationFrame     ||
+	        (callback)->
+	            window.setTimeout callback, 1000/60
 
-	importJs('core/lib/include', function(){
-	    for (var i = 0, coreIncLength = coreInclude.length - 1; i <= coreIncLength; i++) {
-	        importJs('core/'+coreInclude[i]);
-	    }
-	});
+	canvas = document.createElement "canvas"
+	window.canvas = canvas
 
-	importJs('app/config/include', function(){
-	    for (var i = 0,incLength = include.length - 1; i <= incLength; i++) {
-	        importJs('app/'+include[i]);
-	    }
-	});
-
-	loadImage = function(){
-	    var arrayUrlImg = [];
+	loadImage = ->
+	    arrayUrlImg = []
 	    for (var item in sprites) {
-	      if(typeof sprites[item].img === 'string'){
-	        arrayUrlImg.push('./coffeeMaker/app/images/'+sprites[item].img);
-	      }
+	        if(typeof sprites[item].img === 'string'){
+	            arrayUrlImg.push('./coffeeMaker/app/images/'+sprites[item].img);
+	        }
 	    }
 	    for (var first_room in rooms) {
-	      if(typeof rooms[first_room].background === 'string'){
-	        arrayUrlImg.push('./coffeeMaker/app/images/'+rooms[first_room].background);
-	      }
+	        if(typeof rooms[first_room].background === 'string'){
+	            arrayUrlImg.push('./coffeeMaker/app/images/'+rooms[first_room].background);
+	        }
 	    }
-	    resources.load(arrayUrlImg);
-	    resources.onReady(init);
-	};
+	    resources.load arrayUrlImg
+	    resources.onReady init
 
-	initSprites = function(){
-
+	initSprites = ->
 	    for (var item in sprites) {
 	        if (typeof sprites[item].img === "string") {
 	            sprites[item].img = resources.get('./coffeeMaker/app/images/'+sprites[item].img);
@@ -132,45 +123,37 @@
 	        }
 	        sprite[item] = new CMSprite(sprites[item]);
 	    }
-	};
 
-	init = function (){
-
-	    initSprites();
-
-	    ctx = canvas.getContext("2d");
-	    canvas.width = setting.windowWidth;
-	    canvas.height = setting.windowHeight;
-	    document.body.appendChild(canvas);
-
-	    window.ctx = ctx;
-
+	init = ->
+	    do initSprites
+	    ctx = canvas.getContext "2d"
+	    canvas.width = setting.windowWidth
+	    canvas.height = setting.windowHeight
+	    document.body.appendChild canvas
+	    window.ctx = ctx
 	    for (var i = 0, roomObjectsLen = room.objects.length - 1; i <= roomObjectsLen; i++) {
 	        instanceCreate(room.objects[i][0],room.objects[i][1],room.objects[i][2]);
 	    }
+	    lastTime = do Date.now
+	    do gameLoop
 
-	    lastTime = Date.now();
-	    loop();
-	};
+	gameLoop = ->
+	    now = do Date.now
+	    dt = (now - lastTime) / 1000.0
+	    fps = 1000.0 /(now - lastTime)
 
-	loop = function() {
-	    var now = Date.now(),
-	        dt = (now - lastTime) / 1000.0,
-	        fps = 1000.0 /(now - lastTime);
+	    do step
+	    do clearEvent
+	    do draw
 
-	    step();
-	    clearEvent();
-	    draw();
+	    ctx.fillStyle = "#000"
+	    ctx.font = "12pt Arial"
+	    ctx.fillText 'fps: '+Math.round(fps), 20, 20
 
-	    ctx.fillStyle = "#000";
-	    ctx.font = "12pt Arial";
-	    ctx.fillText('fps: '+Math.round(fps), 20, 20);
+	    lastTime = now
+	    requestAnimFrame gameLoop
 
-	    lastTime = now;
-	    requestAnimFrame(loop);
-	};
-
-	step = function(){
+	step = ->
 	    for (var collection in object) {
 	        for (var item in object[collection].id) {
 	            object[collection].id[item].step();
@@ -186,11 +169,9 @@
 	            room.view[i].y = room.height-room.view[i].height;
 	        }
 	    }
-	};
 
-	draw = function(){
-	    var ws, wf, hs, hf;
-	    ctx.clearRect (0, 0, canvas.width, canvas.height);
+	draw = ->
+	    ctx.clearRect 0, 0, canvas.width, canvas.height
 
 	    for (var i = 0, roomViewLen = room.view.length; i < roomViewLen; i++) {
 
@@ -237,12 +218,37 @@
 	            }
 	        }
 
-	        setMyCursor(s.cursor);
+	        setMyCursor s.cursor
 	    }
-	};
 
-	window.onload = loadImage;
+	window.onload = loadImage
 	 */
+
+
+/***/ },
+/* 1 */
+/***/ function(module, exports) {
+
+	var Vector2d;
+
+	Vector2d = (function() {
+	  function Vector2d(x, y) {
+	    this.x = x;
+	    this.y = y;
+	  }
+
+	  Vector2d.prototype.add = function(b) {
+	    var cx, cy;
+	    cx = this.x + b.x;
+	    cy = this.y + b.y;
+	    return new this(cx, cy);
+	  };
+
+	  return Vector2d;
+
+	})();
+
+	module.exports = Vector2d;
 
 
 /***/ }
