@@ -46,19 +46,19 @@
 
 	var Resource, canvas, context, count, draw, gameLoop, init, input, lastTime, loadImage, requestAnimationFrame, requireSprites, sprites, step;
 
-	Resource = __webpack_require__(7);
+	Resource = __webpack_require__(1);
 
-	canvas = __webpack_require__(8);
+	canvas = __webpack_require__(2);
 
 	context = canvas.getContext("2d");
 
-	input = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"core/engine/class/Input\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	input = __webpack_require__(3);
 
 	requireSprites = __webpack_require__(4);
 
 	sprites = requireSprites.keys().map(requireSprites);
 
-	requestAnimationFrame = __webpack_require__(9);
+	requestAnimationFrame = __webpack_require__(6);
 
 	lastTime = Date.now();
 
@@ -103,39 +103,7 @@
 
 
 /***/ },
-/* 1 */,
-/* 2 */,
-/* 3 */,
-/* 4 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var map = {
-		"./player.coffee": 5
-	};
-	function webpackContext(req) {
-		return __webpack_require__(webpackContextResolve(req));
-	};
-	function webpackContextResolve(req) {
-		return map[req] || (function() { throw new Error("Cannot find module '" + req + "'.") }());
-	};
-	webpackContext.keys = function webpackContextKeys() {
-		return Object.keys(map);
-	};
-	webpackContext.resolve = webpackContextResolve;
-	module.exports = webpackContext;
-	webpackContext.id = 4;
-
-
-/***/ },
-/* 5 */
-/***/ function(module, exports) {
-
-	module.exports = 'sprite player';
-
-
-/***/ },
-/* 6 */,
-/* 7 */
+/* 1 */
 /***/ function(module, exports) {
 
 	var Resource, loadImage, loading, readyCallbacks, resourceCache;
@@ -205,14 +173,171 @@
 
 
 /***/ },
-/* 8 */
+/* 2 */
 /***/ function(module, exports) {
 
 	module.exports = document.createElement("canvas");
 
 
 /***/ },
-/* 9 */
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Input, canvas, keyDown, keyPress, keyUp, mouseDown, mousePress, mouseUp, onDownKey, onPressKey, onUpKey, resetAllKeys, resetDownKey, resetPressKey, resetUpKey;
+
+	canvas = __webpack_require__(2);
+
+	keyPress = {};
+
+	keyDown = {};
+
+	keyUp = {};
+
+	mousePress = {};
+
+	mouseDown = {};
+
+	mouseUp = {};
+
+	resetAllKeys = function() {
+	  keyPress = {};
+	  keyDown = {};
+	  return keyUp = {};
+	};
+
+	resetUpKey = function(keyCode) {
+	  return delete keyUp[keyCode];
+	};
+
+	resetDownKey = function(keyCode) {
+	  return delete keyDown[keyCode];
+	};
+
+	resetPressKey = function(keyCode) {
+	  return delete keyPress[keyCode];
+	};
+
+	onDownKey = function(keyCode) {
+	  if (keyDown[keyCode] == null) {
+	    return keyDown[keyCode] = true;
+	  }
+	};
+
+	onUpKey = function(keyCode) {
+	  if (keyUp[keyCode] == null) {
+	    return keyUp[keyCode] = true;
+	  }
+	};
+
+	onPressKey = function(keyCode) {
+	  return keyPress[keyCode] = true;
+	};
+
+	Input = (function() {
+	  function Input() {
+	    window.document.addEventListener('keydown', function(e) {
+	      console.log('keydown');
+	      e.preventDefault();
+	      resetUpKey(e.keyCode);
+	      onPressKey(e.keyCode);
+	      return onDownKey(e.keyCode);
+	    });
+	    window.document.addEventListener('keyup', function(e) {
+	      resetPressKey(e.keyCode);
+	      resetDownKey(e.keyCode);
+	      return onUpKey(e.keyCode);
+	    });
+	    window.addEventListener('blur', function() {
+	      return resetAllKeys();
+	    });
+	    canvas.addEventListener('mousemove', function(e) {
+	      window.mouseX = e.offsetX === void 0 ? e.layerX : e.offsetX;
+	      return window.mouseY = e.offsetY === void 0 ? e.layerY : e.offsetY;
+	    });
+	    canvas.addEventListener('mouseDown', function(e) {
+	      mousePress[e.which] = true;
+	      return mouseDown[e.which] = true;
+	    });
+	    canvas.addEventListener('mouseUp', function(e) {
+	      delete mousePress[e.which];
+	      return mouseUp[e.which] = true;
+	    });
+	    canvas.oncontextmenu = function() {
+	      return false;
+	    };
+	  }
+
+	  Input.prototype.isKeyPressed = function(code) {
+	    return keyPress[code] != null;
+	  };
+
+	  Input.prototype.isKeyDown = function(code) {
+	    if ((keyDown[code] != null) && keyDown[code] === true) {
+	      keyDown[code] = 2;
+	      return true;
+	    } else {
+	      return false;
+	    }
+	  };
+
+	  Input.prototype.isKeyUp = function(code) {
+	    if ((keyUp[code] != null) && keyUp[code] === true) {
+	      keyUp[code] = 2;
+	      return true;
+	    } else {
+	      return false;
+	    }
+	  };
+
+	  Input.prototype.isMousePressed = function(code) {
+	    return mousePress[code] != null;
+	  };
+
+	  Input.prototype.isMouseDown = function(code) {
+	    return mouseDown[code] != null;
+	  };
+
+	  Input.prototype.isMouseUp = function(code) {
+	    return mouseUp[code] != null;
+	  };
+
+	  return Input;
+
+	})();
+
+	module.exports = new Input;
+
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var map = {
+		"./player.coffee": 5
+	};
+	function webpackContext(req) {
+		return __webpack_require__(webpackContextResolve(req));
+	};
+	function webpackContextResolve(req) {
+		return map[req] || (function() { throw new Error("Cannot find module '" + req + "'.") }());
+	};
+	webpackContext.keys = function webpackContextKeys() {
+		return Object.keys(map);
+	};
+	webpackContext.resolve = webpackContextResolve;
+	module.exports = webpackContext;
+	webpackContext.id = 4;
+
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	module.exports = 'sprite player';
+
+
+/***/ },
+/* 6 */
 /***/ function(module, exports) {
 
 	module.exports = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {

@@ -2,7 +2,7 @@ Resource = require 'core/module/Resource'
 canvas = require 'core/module/canvas'
 context = canvas.getContext "2d"
 
-input = require 'core/engine/class/Input'
+input = require 'core/class/Input'
 
 requireSprites = require.context 'game/sprite', true, /^\.\/.*\.(coffee|js)$/
 sprites = requireSprites.keys().map requireSprites
