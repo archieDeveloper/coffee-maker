@@ -1,23 +1,24 @@
-Resource = require './core/engine/module/Resource'
-canvas = require './core/engine/module/canvas'
+Resource = require 'core/module/Resource'
+canvas = require 'core/module/canvas'
 context = canvas.getContext "2d"
-input = require './core/engine/class/Input'
 
-setInterval(->
-    do input.whatKey
-, 1000)
+input = require 'core/engine/class/Input'
 
-requireSprites = require.context './game/sprite', true, /^\.\/.*\.(coffee|js)$/
+requireSprites = require.context 'game/sprite', true, /^\.\/.*\.(coffee|js)$/
 sprites = requireSprites.keys().map requireSprites
 
-requestAnimationFrame = require './core/engine/module/requestAnimationFrame'
+requestAnimationFrame = require 'core/module/requestAnimationFrame'
 
 lastTime = do Date.now
 
 step = ->
+#    console.log input.isKeyPressed(65)
+#    console.log input.isKeyDown(65)
 
 draw = ->
     context.clearRect 0, 0, canvas.width, canvas.height
+
+count = 0
 
 gameLoop = ->
     now = do Date.now
@@ -25,12 +26,14 @@ gameLoop = ->
     fps = 1000.0/(now - lastTime)
 
     do step
-    #    do clearEvent
+    if (input.isKeyUp(65))
+        count++
     do draw
 
     context.fillStyle = "#000"
     context.font = "12pt Arial"
     context.fillText 'fps: '+Math.round(fps), 20, 20
+    context.fillText 'count: '+count, 20, 100
 
     lastTime = now
     requestAnimationFrame gameLoop

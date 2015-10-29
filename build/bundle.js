@@ -44,25 +44,21 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Resource, canvas, context, draw, gameLoop, init, input, lastTime, loadImage, requestAnimationFrame, requireSprites, sprites, step;
+	var Resource, canvas, context, count, draw, gameLoop, init, input, lastTime, loadImage, requestAnimationFrame, requireSprites, sprites, step;
 
-	Resource = __webpack_require__(1);
+	Resource = __webpack_require__(7);
 
-	canvas = __webpack_require__(2);
+	canvas = __webpack_require__(8);
 
 	context = canvas.getContext("2d");
 
-	input = __webpack_require__(3);
-
-	setInterval(function() {
-	  return input.whatKey();
-	}, 1000);
+	input = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"core/engine/class/Input\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 
 	requireSprites = __webpack_require__(4);
 
 	sprites = requireSprites.keys().map(requireSprites);
 
-	requestAnimationFrame = __webpack_require__(6);
+	requestAnimationFrame = __webpack_require__(9);
 
 	lastTime = Date.now();
 
@@ -72,16 +68,22 @@
 	  return context.clearRect(0, 0, canvas.width, canvas.height);
 	};
 
+	count = 0;
+
 	gameLoop = function() {
 	  var dt, fps, now;
 	  now = Date.now();
 	  dt = (now - lastTime) / 1000.0;
 	  fps = 1000.0 / (now - lastTime);
 	  step();
+	  if (input.isKeyUp(65)) {
+	    count++;
+	  }
 	  draw();
 	  context.fillStyle = "#000";
 	  context.font = "12pt Arial";
 	  context.fillText('fps: ' + Math.round(fps), 20, 20);
+	  context.fillText('count: ' + count, 20, 100);
 	  lastTime = now;
 	  return requestAnimationFrame(gameLoop);
 	};
@@ -101,194 +103,9 @@
 
 
 /***/ },
-/* 1 */
-/***/ function(module, exports) {
-
-	var Resource;
-
-	Resource = (function() {
-	  function Resource() {}
-
-	  Resource.prototype._resourceCache = {};
-
-	  Resource.prototype._loading = [];
-
-	  Resource.prototype._readyCallbacks = [];
-
-	  Resource.prototype._load = function(url) {
-	    var img;
-	    if (this._resourceCache[url]) {
-	      return this._resourceCache[url];
-	    } else {
-	      img = new Image;
-	      img.onload = function() {
-	        this._resourceCache[url] = img;
-	        if (isReady()) {
-	          return this._readyCallbacks.forEach(function(func) {
-	            return func();
-	          });
-	        }
-	      };
-	      this._resourceCache[url] = false;
-	      return img.src = url;
-	    }
-	  };
-
-	  Resource.prototype.load = function(urlOrArr) {
-	    if (urlOrArr instanceof Array) {
-	      return urlOrArr.forEach(function(url) {
-	        return this._load(url);
-	      });
-	    } else {
-	      return this._load(urlOrArr);
-	    }
-	  };
-
-	  Resource.prototype.get = function(url) {
-	    return this._resourceCache[url];
-	  };
-
-	  Resource.prototype.isReady = function() {
-	    var k, ready;
-	    ready = true;
-	    for (k in this._resourceCache) {
-	      if (this._resourceCache.hasOwnProperty(k) && !this._resourceCache[k]) {
-	        ready = false;
-	      }
-	    }
-	    return ready;
-	  };
-
-	  Resource.prototype.onReady = function(func) {
-	    return this._readyCallbacks.push(func);
-	  };
-
-	  return Resource;
-
-	})();
-
-	module.exports = Resource;
-
-
-/***/ },
-/* 2 */
-/***/ function(module, exports) {
-
-	module.exports = document.createElement("canvas");
-
-
-/***/ },
-/* 3 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Input, canvas;
-
-	canvas = __webpack_require__(2);
-
-	Input = (function() {
-	  Input.prototype._keyPress = {};
-
-	  Input.prototype._keyDown = {};
-
-	  Input.prototype._keyUp = {};
-
-	  Input.prototype._kkey = void 0;
-
-	  Input.prototype._mousePress = {};
-
-	  Input.prototype._mouseDown = {};
-
-	  Input.prototype._mouseUp = {};
-
-	  function Input() {
-	    document.addEventListener('keyDown', function(e) {
-	      console.log('sdfsa');
-	      e.preventDefault();
-	      this._keyPress[e.keyCode] = true;
-	      this._keyDown[e.keyCode] = true;
-	      this._kkey = e.keyCode;
-	    });
-	    document.addEventListener('keyUp', function(e) {
-	      delete this._keyPress[e.keyCode];
-	      this._keyUp[e.keyCode] = true;
-	    });
-	    window.addEventListener('blur', function() {
-	      this._keyPress = {};
-	      this._keyDown = {};
-	      this._keyUp = {};
-	    });
-	    canvas.addEventListener('mousemove', function(e) {
-	      window.mouseX = e.offsetX === void 0 ? e.layerX : e.offsetX;
-	      window.mouseY = e.offsetY === void 0 ? e.layerY : e.offsetY;
-	    });
-	    canvas.addEventListener('mouseDown', function(e) {
-	      this._mousePress[e.which] = true;
-	      this._mouseDown[e.which] = true;
-	    });
-	    canvas.addEventListener('mouseUp', function(e) {
-	      delete _mousePress[e.which];
-	      this._mouseUp[e.which] = true;
-	    });
-	    canvas.oncontextmenu = function(e) {
-	      return false;
-	    };
-	  }
-
-	  Input.prototype.isKeyPressed = function(code) {
-	    if (this._keyPress[code] !== null) {
-	      return true;
-	    }
-	  };
-
-	  Input.prototype.isKeyDown = function(code) {
-	    if (this._keyDown[code] !== null) {
-	      return true;
-	    }
-	  };
-
-	  Input.prototype.isKeyUp = function(code) {
-	    if (this._keyUp[code] !== null) {
-	      return true;
-	    }
-	  };
-
-	  Input.prototype.whatKey = function() {
-	    console.log(this._kkey);
-	  };
-
-	  Input.prototype.isMousePressed = function(code) {
-	    if (this._mousePress[code] !== null) {
-	      return true;
-	    }
-	  };
-
-	  Input.prototype.isMouseDown = function(code) {
-	    if (this._mouseDown[code] !== null) {
-	      return true;
-	    }
-	  };
-
-	  Input.prototype.isMouseUp = function(code) {
-	    if (this._mouseUp[code] !== null) {
-	      return true;
-	    }
-	  };
-
-	  Input.prototype.clearEvent = function() {
-	    this._mouseDown = {};
-	    this._mouseUp = {};
-	    this._keyDown = {};
-	    this._keyUp = {};
-	  };
-
-	  return Input;
-
-	})();
-
-	module.exports = new Input;
-
-
-/***/ },
+/* 1 */,
+/* 2 */,
+/* 3 */,
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -317,7 +134,85 @@
 
 
 /***/ },
-/* 6 */
+/* 6 */,
+/* 7 */
+/***/ function(module, exports) {
+
+	var Resource, loadImage, loading, readyCallbacks, resourceCache;
+
+	resourceCache = {};
+
+	loading = [];
+
+	readyCallbacks = [];
+
+	loadImage = function(url) {
+	  var img;
+	  if (resourceCache[url]) {
+	    return resourceCache[url];
+	  } else {
+	    img = new Image;
+	    img.onload = function() {
+	      resourceCache[url] = img;
+	      if (isReady()) {
+	        return readyCallbacks.forEach(function(func) {
+	          return func();
+	        });
+	      }
+	    };
+	    resourceCache[url] = false;
+	    return img.src = url;
+	  }
+	};
+
+	Resource = (function() {
+	  function Resource() {}
+
+	  Resource.prototype.load = function(urlOrArr) {
+	    if (urlOrArr instanceof Array) {
+	      return urlOrArr.forEach(function(url) {
+	        return loadImage(url);
+	      });
+	    } else {
+	      return loadImage(urlOrArr);
+	    }
+	  };
+
+	  Resource.prototype.get = function(url) {
+	    return resourceCache[url];
+	  };
+
+	  Resource.prototype.isReady = function() {
+	    var k, ready;
+	    ready = true;
+	    for (k in resourceCache) {
+	      if (resourceCache.hasOwnProperty(k) && !resourceCache[k]) {
+	        ready = false;
+	      }
+	    }
+	    return ready;
+	  };
+
+	  Resource.prototype.onReady = function(func) {
+	    return readyCallbacks.push(func);
+	  };
+
+	  return Resource;
+
+	})();
+
+	module.exports = Resource;
+
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+
+	module.exports = document.createElement("canvas");
+
+
+/***/ },
+/* 9 */
 /***/ function(module, exports) {
 
 	module.exports = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {

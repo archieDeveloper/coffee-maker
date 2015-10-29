@@ -11,6 +11,7 @@ module.exports =
             test: /\.coffee$/, loader: 'coffee-loader'
         ]
     resolve:
+        root: path.resolve './source'
         extensions: ["", ".web.coffee", ".web.js", ".coffee", ".js"]
     plugins: [
         #new webpack.optimize.UglifyJsPlugin
