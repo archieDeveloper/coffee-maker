@@ -1,14 +1,11 @@
-resource = require './core/engine/module/resource'
+Resource = require './core/engine/module/Resource'
 
-CMRequestAnimationFrame = do ->
-    window.requestAnimationFrame           ||
-        window.webkitRequestAnimationFrame ||
-        window.mozRequestAnimationFrame    ||
-        window.oRequestAnimationFrame      ||
-        window.msRequestAnimationFrame     ||
-        (callback)->
-            window.setTimeout callback, 1000/60
-            return
+Input = require './core/engine/class/Input'
+
+requireSprites = require.context './game/sprite', true, /^\.\/.*\.(coffee|js)$/
+sprites = requireSprites.keys().map requireSprites
+
+requestAnimationFrame = require './core/engine/module/requestAnimationFrame'
 
 canvas = document.createElement "canvas"
 context = canvas.getContext "2d"
@@ -33,7 +30,7 @@ gameLoop = ->
     context.fillText 'fps: '+Math.round(fps), 20, 20
 
     lastTime = now
-    CMRequestAnimationFrame gameLoop
+    requestAnimationFrame gameLoop
 
 init = ->
     canvas.width = 800
