@@ -44,21 +44,25 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Input, Resource, canvas, context, draw, gameLoop, init, lastTime, loadImage, requestAnimationFrame, requireSprites, sprites, step;
+	var Resource, canvas, context, draw, gameLoop, init, input, lastTime, loadImage, requestAnimationFrame, requireSprites, sprites, step;
 
 	Resource = __webpack_require__(1);
 
-	Input = __webpack_require__(2);
+	canvas = __webpack_require__(2);
 
-	requireSprites = __webpack_require__(3);
+	context = canvas.getContext("2d");
+
+	input = __webpack_require__(3);
+
+	setInterval(function() {
+	  return input.whatKey();
+	}, 1000);
+
+	requireSprites = __webpack_require__(4);
 
 	sprites = requireSprites.keys().map(requireSprites);
 
-	requestAnimationFrame = __webpack_require__(5);
-
-	canvas = document.createElement("canvas");
-
-	context = canvas.getContext("2d");
+	requestAnimationFrame = __webpack_require__(6);
 
 	lastTime = Date.now();
 
@@ -170,120 +174,126 @@
 /* 2 */
 /***/ function(module, exports) {
 
-	var clearEvent, isKeyDown, isKeyPressed, isKeyUp, isMouseDown, isMousePressed, isMouseUp, keyDown, keyPress, keyUp, kkey, mouseDown, mousePress, mouseUp, setMyCursor, whatKey;
-
-	keyPress = {};
-
-	keyDown = {};
-
-	keyUp = {};
-
-	kkey = void 0;
-
-	mousePress = {};
-
-	mouseDown = {};
-
-	mouseUp = {};
-
-	document.addEventListener('keydown', function(e) {
-	  e.preventDefault();
-	  keyPress[e.keyCode] = true;
-	  keyDown[e.keyCode] = true;
-	  kkey = e.keyCode;
-	});
-
-	document.addEventListener('keyup', function(e) {
-	  delete keyPress[e.keyCode];
-	  keyUp[e.keyCode] = true;
-	});
-
-	window.addEventListener('blur', function() {
-	  keyPress = {};
-	  keyDown = {};
-	  keyUp = {};
-	});
-
-	isKeyPressed = function(code) {
-	  if (keyPress[code] !== null) {
-	    return true;
-	  }
-	};
-
-	isKeyDown = function(code) {
-	  if (keyDown[code] !== null) {
-	    return true;
-	  }
-	};
-
-	isKeyUp = function(code) {
-	  if (keyUp[code] !== null) {
-	    return true;
-	  }
-	};
-
-	whatKey = function() {
-	  console.log(kkey);
-	};
-
-	canvas.addEventListener('mousemove', function(e) {
-	  window.mouseX = e.offsetX === void 0 ? e.layerX : e.offsetX;
-	  window.mouseY = e.offsetY === void 0 ? e.layerY : e.offsetY;
-	});
-
-	canvas.addEventListener('mousedown', function(e) {
-	  mousePress[e.which] = true;
-	  mouseDown[e.which] = true;
-	});
-
-	canvas.addEventListener('mouseup', function(e) {
-	  delete mousePress[e.which];
-	  mouseUp[e.which] = true;
-	});
-
-	canvas.oncontextmenu = function(e) {
-	  return false;
-	};
-
-	isMousePressed = function(code) {
-	  if (mousePress[code] !== null) {
-	    return true;
-	  }
-	};
-
-	isMouseDown = function(code) {
-	  if (mouseDown[code] !== null) {
-	    return true;
-	  }
-	};
-
-	isMouseUp = function(code) {
-	  if (mouseUp[code] !== null) {
-	    return true;
-	  }
-	};
-
-	setMyCursor = function(sprite) {
-	  if (canvas.style.cursor !== 'none') {
-	    canvas.style.cursor = 'none';
-	  }
-	  drawSprite(sprite, mouseX, mouseY);
-	};
-
-	clearEvent = function() {
-	  mouseDown = {};
-	  mouseUp = {};
-	  keyDown = {};
-	  keyUp = {};
-	};
+	module.exports = document.createElement("canvas");
 
 
 /***/ },
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var Input, canvas;
+
+	canvas = __webpack_require__(2);
+
+	Input = (function() {
+	  Input.prototype._keyPress = {};
+
+	  Input.prototype._keyDown = {};
+
+	  Input.prototype._keyUp = {};
+
+	  Input.prototype._kkey = void 0;
+
+	  Input.prototype._mousePress = {};
+
+	  Input.prototype._mouseDown = {};
+
+	  Input.prototype._mouseUp = {};
+
+	  function Input() {
+	    document.addEventListener('keyDown', function(e) {
+	      console.log('sdfsa');
+	      e.preventDefault();
+	      this._keyPress[e.keyCode] = true;
+	      this._keyDown[e.keyCode] = true;
+	      this._kkey = e.keyCode;
+	    });
+	    document.addEventListener('keyUp', function(e) {
+	      delete this._keyPress[e.keyCode];
+	      this._keyUp[e.keyCode] = true;
+	    });
+	    window.addEventListener('blur', function() {
+	      this._keyPress = {};
+	      this._keyDown = {};
+	      this._keyUp = {};
+	    });
+	    canvas.addEventListener('mousemove', function(e) {
+	      window.mouseX = e.offsetX === void 0 ? e.layerX : e.offsetX;
+	      window.mouseY = e.offsetY === void 0 ? e.layerY : e.offsetY;
+	    });
+	    canvas.addEventListener('mouseDown', function(e) {
+	      this._mousePress[e.which] = true;
+	      this._mouseDown[e.which] = true;
+	    });
+	    canvas.addEventListener('mouseUp', function(e) {
+	      delete _mousePress[e.which];
+	      this._mouseUp[e.which] = true;
+	    });
+	    canvas.oncontextmenu = function(e) {
+	      return false;
+	    };
+	  }
+
+	  Input.prototype.isKeyPressed = function(code) {
+	    if (this._keyPress[code] !== null) {
+	      return true;
+	    }
+	  };
+
+	  Input.prototype.isKeyDown = function(code) {
+	    if (this._keyDown[code] !== null) {
+	      return true;
+	    }
+	  };
+
+	  Input.prototype.isKeyUp = function(code) {
+	    if (this._keyUp[code] !== null) {
+	      return true;
+	    }
+	  };
+
+	  Input.prototype.whatKey = function() {
+	    console.log(this._kkey);
+	  };
+
+	  Input.prototype.isMousePressed = function(code) {
+	    if (this._mousePress[code] !== null) {
+	      return true;
+	    }
+	  };
+
+	  Input.prototype.isMouseDown = function(code) {
+	    if (this._mouseDown[code] !== null) {
+	      return true;
+	    }
+	  };
+
+	  Input.prototype.isMouseUp = function(code) {
+	    if (this._mouseUp[code] !== null) {
+	      return true;
+	    }
+	  };
+
+	  Input.prototype.clearEvent = function() {
+	    this._mouseDown = {};
+	    this._mouseUp = {};
+	    this._keyDown = {};
+	    this._keyUp = {};
+	  };
+
+	  return Input;
+
+	})();
+
+	module.exports = new Input;
+
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var map = {
-		"./player.coffee": 4
+		"./player.coffee": 5
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -296,18 +306,18 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 3;
+	webpackContext.id = 4;
 
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports) {
 
 	module.exports = 'sprite player';
 
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports) {
 
 	module.exports = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {

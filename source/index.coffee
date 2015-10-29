@@ -1,14 +1,17 @@
 Resource = require './core/engine/module/Resource'
+canvas = require './core/engine/module/canvas'
+context = canvas.getContext "2d"
+input = require './core/engine/class/Input'
 
-Input = require './core/engine/class/Input'
+setInterval(->
+    do input.whatKey
+, 1000)
 
 requireSprites = require.context './game/sprite', true, /^\.\/.*\.(coffee|js)$/
 sprites = requireSprites.keys().map requireSprites
 
 requestAnimationFrame = require './core/engine/module/requestAnimationFrame'
 
-canvas = document.createElement "canvas"
-context = canvas.getContext "2d"
 lastTime = do Date.now
 
 step = ->
