@@ -26,7 +26,7 @@ gameLoop = ->
     fps = 1000.0/(now - lastTime)
 
     do step
-    if (input.isKeyUp(65))
+    if (input.keyboard.isUp(65))
         count++
     do draw
 
