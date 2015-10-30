@@ -1,33 +1,10 @@
-pressKeys = {}
-downKeys  = {}
-upKeys    = {}
+class Keyboard
 
-resetAll = ->
   pressKeys = {}
   downKeys  = {}
   upKeys    = {}
 
-resetUp = (keyCode)->
-  delete upKeys[keyCode]
-
-resetDown = (keyCode)->
-  delete downKeys[keyCode]
-
-resetPress = (keyCode)->
-  delete pressKeys[keyCode]
-
-onDown = (keyCode)->
-  if not downKeys[keyCode]?
-    downKeys[keyCode] = true
-
-onUp = (keyCode)->
-  if not upKeys[keyCode]?
-    upKeys[keyCode] = true
-
-onPress = (keyCode)->
-  pressKeys[keyCode] = true
-
-class Keyboard
+  instance = null
 
   constructor: ->
     window.document.addEventListener 'keydown', (e)->
@@ -41,6 +18,11 @@ class Keyboard
       onUp e.keyCode
     window.addEventListener 'blur', ->
       do resetAll
+
+  @getInstance: ->
+    if not instance?
+      instance = new Keyboard
+    instance
 
   isPressed: (code)->
     pressKeys[code]?
@@ -59,4 +41,29 @@ class Keyboard
     else
       false
 
-module.exports = new Keyboard
+  resetAll = ->
+    pressKeys = {}
+    downKeys  = {}
+    upKeys    = {}
+
+  resetUp = (keyCode)->
+    delete upKeys[keyCode]
+
+  resetDown = (keyCode)->
+    delete downKeys[keyCode]
+
+  resetPress = (keyCode)->
+    delete pressKeys[keyCode]
+
+  onDown = (keyCode)->
+    if not downKeys[keyCode]?
+      downKeys[keyCode] = true
+
+  onUp = (keyCode)->
+    if not upKeys[keyCode]?
+      upKeys[keyCode] = true
+
+  onPress = (keyCode)->
+    pressKeys[keyCode] = true
+
+module.exports = Keyboard

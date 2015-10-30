@@ -44,7 +44,7 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Resource, canvas, context, count, draw, gameLoop, init, input, lastTime, loadImage, requestAnimationFrame, requireSprites, sprites, step;
+	var Input, Resource, canvas, context, count, draw, gameLoop, init, input, lastTime, loadImage, requestAnimationFrame, requireSprites, sprites, step;
 
 	Resource = __webpack_require__(1);
 
@@ -52,7 +52,9 @@
 
 	context = canvas.getContext("2d");
 
-	input = __webpack_require__(3);
+	Input = __webpack_require__(3);
+
+	input = Input.getInstance();
 
 	requireSprites = __webpack_require__(6);
 
@@ -76,14 +78,10 @@
 	  dt = (now - lastTime) / 1000.0;
 	  fps = 1000.0 / (now - lastTime);
 	  step();
-	  if (input.keyboard.isUp(65)) {
-	    count++;
-	  }
 	  draw();
 	  context.fillStyle = "#000";
 	  context.font = "12pt Arial";
 	  context.fillText('fps: ' + Math.round(fps), 20, 20);
-	  context.fillText('count: ' + count, 20, 100);
 	  lastTime = now;
 	  return requestAnimationFrame(gameLoop);
 	};
@@ -183,75 +181,54 @@
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Input, canvas, keyboard, mouse;
+	var Input, Keyboard, Mouse;
 
-	canvas = __webpack_require__(2);
+	Keyboard = __webpack_require__(4);
 
-	keyboard = __webpack_require__(4);
-
-	mouse = __webpack_require__(5);
+	Mouse = __webpack_require__(5);
 
 	Input = (function() {
+	  var instance;
+
+	  instance = null;
+
 	  function Input() {}
 
-	  Input.prototype.keyboard = keyboard;
+	  Input.getInstance = function() {
+	    if (instance == null) {
+	      instance = new Input;
+	    }
+	    return instance;
+	  };
 
-	  Input.prototype.mouse = mouse;
+	  Input.prototype.keyboard = Keyboard.getInstance();
+
+	  Input.prototype.mouse = Mouse.getInstance();
 
 	  return Input;
 
 	})();
 
-	module.exports = new Input;
+	module.exports = Input;
 
 
 /***/ },
 /* 4 */
 /***/ function(module, exports) {
 
-	var Keyboard, downKeys, onDown, onPress, onUp, pressKeys, resetAll, resetDown, resetPress, resetUp, upKeys;
-
-	pressKeys = {};
-
-	downKeys = {};
-
-	upKeys = {};
-
-	resetAll = function() {
-	  pressKeys = {};
-	  downKeys = {};
-	  return upKeys = {};
-	};
-
-	resetUp = function(keyCode) {
-	  return delete upKeys[keyCode];
-	};
-
-	resetDown = function(keyCode) {
-	  return delete downKeys[keyCode];
-	};
-
-	resetPress = function(keyCode) {
-	  return delete pressKeys[keyCode];
-	};
-
-	onDown = function(keyCode) {
-	  if (downKeys[keyCode] == null) {
-	    return downKeys[keyCode] = true;
-	  }
-	};
-
-	onUp = function(keyCode) {
-	  if (upKeys[keyCode] == null) {
-	    return upKeys[keyCode] = true;
-	  }
-	};
-
-	onPress = function(keyCode) {
-	  return pressKeys[keyCode] = true;
-	};
+	var Keyboard;
 
 	Keyboard = (function() {
+	  var downKeys, instance, onDown, onPress, onUp, pressKeys, resetAll, resetDown, resetPress, resetUp, upKeys;
+
+	  pressKeys = {};
+
+	  downKeys = {};
+
+	  upKeys = {};
+
+	  instance = null;
+
 	  function Keyboard() {
 	    window.document.addEventListener('keydown', function(e) {
 	      e.preventDefault();
@@ -268,6 +245,13 @@
 	      return resetAll();
 	    });
 	  }
+
+	  Keyboard.getInstance = function() {
+	    if (instance == null) {
+	      instance = new Keyboard;
+	    }
+	    return instance;
+	  };
 
 	  Keyboard.prototype.isPressed = function(code) {
 	    return pressKeys[code] != null;
@@ -291,32 +275,75 @@
 	    }
 	  };
 
+	  resetAll = function() {
+	    pressKeys = {};
+	    downKeys = {};
+	    return upKeys = {};
+	  };
+
+	  resetUp = function(keyCode) {
+	    return delete upKeys[keyCode];
+	  };
+
+	  resetDown = function(keyCode) {
+	    return delete downKeys[keyCode];
+	  };
+
+	  resetPress = function(keyCode) {
+	    return delete pressKeys[keyCode];
+	  };
+
+	  onDown = function(keyCode) {
+	    if (downKeys[keyCode] == null) {
+	      return downKeys[keyCode] = true;
+	    }
+	  };
+
+	  onUp = function(keyCode) {
+	    if (upKeys[keyCode] == null) {
+	      return upKeys[keyCode] = true;
+	    }
+	  };
+
+	  onPress = function(keyCode) {
+	    return pressKeys[keyCode] = true;
+	  };
+
 	  return Keyboard;
 
 	})();
 
-	module.exports = new Keyboard;
+	module.exports = Keyboard;
 
 
 /***/ },
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Mouse, canvas, mouseDown, mousePress, mouseUp;
+	var Mouse, canvas;
 
 	canvas = __webpack_require__(2);
 
-	mousePress = {};
-
-	mouseDown = {};
-
-	mouseUp = {};
-
 	Mouse = (function() {
+	  var instance, mouseDown, mousePress, mouseUp, position;
+
+	  mousePress = {};
+
+	  mouseDown = {};
+
+	  mouseUp = {};
+
+	  position = {
+	    x: 0,
+	    y: 0
+	  };
+
+	  instance = null;
+
 	  function Mouse() {
 	    canvas.addEventListener('mousemove', function(e) {
-	      window.mouseX = e.offsetX === void 0 ? e.layerX : e.offsetX;
-	      return window.mouseY = e.offsetY === void 0 ? e.layerY : e.offsetY;
+	      position.x = e.offsetX == null ? e.layerX : e.offsetX;
+	      return position.y = e.offsetY == null ? e.layerY : e.offsetY;
 	    });
 	    canvas.addEventListener('mouseDown', function(e) {
 	      mousePress[e.which] = true;
@@ -331,6 +358,13 @@
 	    };
 	  }
 
+	  Mouse.getInstance = function() {
+	    if (instance == null) {
+	      instance = new Mouse;
+	    }
+	    return instance;
+	  };
+
 	  Mouse.prototype.isPressed = function(code) {
 	    return mousePress[code] != null;
 	  };
@@ -343,11 +377,15 @@
 	    return mouseUp[code] != null;
 	  };
 
+	  Mouse.prototype.getPosition = function() {
+	    return position;
+	  };
+
 	  return Mouse;
 
 	})();
 
-	module.exports = new Mouse;
+	module.exports = Mouse;
 
 
 /***/ },

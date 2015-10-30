@@ -16,6 +16,7 @@ loadImage = (url)->
     img.src = url
 
 class Resource
+
   constructor: ->
 
   load: (urlOrArr)->

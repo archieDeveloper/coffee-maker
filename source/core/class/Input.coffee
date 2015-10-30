@@ -1,13 +1,19 @@
-canvas   = require 'core/module/canvas'
-keyboard = require 'core/class/Input/Keyboard'
-mouse    = require 'core/class/Input/Mouse'
+Keyboard = require 'core/class/Input/Keyboard'
+Mouse    = require 'core/class/Input/Mouse'
 
 class Input
 
+  instance = null
+
   constructor: ->
 
-  keyboard: keyboard
+  @getInstance: ->
+    if not instance?
+      instance = new Input
+    instance
 
-  mouse: mouse
+  keyboard: Keyboard.getInstance()
 
-module.exports = new Input
+  mouse: Mouse.getInstance()
+
+module.exports = Input
