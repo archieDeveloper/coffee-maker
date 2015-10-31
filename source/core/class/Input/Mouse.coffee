@@ -1,4 +1,5 @@
 canvas = require 'core/module/canvas'
+Vector2d = require 'core/class/Vector2d'
 
 class Mouse
 
@@ -6,14 +7,14 @@ class Mouse
   mouseDown  = {}
   mouseUp    = {}
 
-  position   = x:0, y:0
+  instance   = null
 
-  instance = null
+  position: new Vector2d 0, 0
 
   constructor: ->
-    canvas.addEventListener 'mousemove', (e)->
-      position.x = if not e.offsetX? then e.layerX else e.offsetX
-      position.y = if not e.offsetY? then e.layerY else e.offsetY
+    canvas.addEventListener 'mousemove', (e)=>
+      @position.x = if not e.offsetX? then e.layerX else e.offsetX
+      @position.y = if not e.offsetY? then e.layerY else e.offsetY
     canvas.addEventListener 'mouseDown', (e)->
       mousePress[e.which] = true
       mouseDown[e.which] = true
@@ -36,9 +37,5 @@ class Mouse
 
   isUp: (code)->
     mouseUp[code]?
-
-  getPosition: ->
-    position
-
 
 module.exports = Mouse

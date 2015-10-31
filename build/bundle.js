@@ -56,11 +56,13 @@
 
 	input = Input.getInstance();
 
-	requireSprites = __webpack_require__(6);
+	requireSprites = __webpack_require__(7);
 
 	sprites = requireSprites.keys().map(requireSprites);
 
-	requestAnimationFrame = __webpack_require__(8);
+	console.log(sprites[0]);
+
+	requestAnimationFrame = __webpack_require__(10);
 
 	lastTime = Date.now();
 
@@ -320,12 +322,14 @@
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Mouse, canvas;
+	var Mouse, Vector2d, canvas;
 
 	canvas = __webpack_require__(2);
 
+	Vector2d = __webpack_require__(6);
+
 	Mouse = (function() {
-	  var instance, mouseDown, mousePress, mouseUp, position;
+	  var instance, mouseDown, mousePress, mouseUp;
 
 	  mousePress = {};
 
@@ -333,18 +337,17 @@
 
 	  mouseUp = {};
 
-	  position = {
-	    x: 0,
-	    y: 0
-	  };
-
 	  instance = null;
 
+	  Mouse.prototype.position = new Vector2d(0, 0);
+
 	  function Mouse() {
-	    canvas.addEventListener('mousemove', function(e) {
-	      position.x = e.offsetX == null ? e.layerX : e.offsetX;
-	      return position.y = e.offsetY == null ? e.layerY : e.offsetY;
-	    });
+	    canvas.addEventListener('mousemove', (function(_this) {
+	      return function(e) {
+	        _this.position.x = e.offsetX == null ? e.layerX : e.offsetX;
+	        return _this.position.y = e.offsetY == null ? e.layerY : e.offsetY;
+	      };
+	    })(this));
 	    canvas.addEventListener('mouseDown', function(e) {
 	      mousePress[e.which] = true;
 	      return mouseDown[e.which] = true;
@@ -377,10 +380,6 @@
 	    return mouseUp[code] != null;
 	  };
 
-	  Mouse.prototype.getPosition = function() {
-	    return position;
-	  };
-
 	  return Mouse;
 
 	})();
@@ -390,10 +389,82 @@
 
 /***/ },
 /* 6 */
+/***/ function(module, exports) {
+
+	var Vector2d;
+
+	Vector2d = (function() {
+	  function Vector2d(x, y) {
+	    this.x = x;
+	    this.y = y;
+	  }
+
+	  Vector2d.prototype.add = function(b) {
+	    this.x += b.x;
+	    this.y += b.y;
+	    return this;
+	  };
+
+	  Vector2d.prototype.sub = function(b) {
+	    this.x -= b.x;
+	    this.y -= b.y;
+	    return this;
+	  };
+
+	  Vector2d.prototype.mul = function(scalar) {
+	    this.x *= scalar;
+	    this.y *= scalar;
+	    return this;
+	  };
+
+	  Vector2d.prototype.div = function(scalar) {
+	    this.x /= scalar;
+	    this.y /= scalar;
+	    return this;
+	  };
+
+	  Vector2d.prototype.mulScalar = function(b) {
+	    this.x *= b.x;
+	    this.y *= b.y;
+	    return this;
+	  };
+
+	  Vector2d.prototype.length = function() {
+	    return Math.sqrt(this.x * this.x + this.y * this.y);
+	  };
+
+	  Vector2d.prototype.normalize = function() {
+	    var len;
+	    len = this.length();
+	    this.x /= len;
+	    this.y /= len;
+	    return this;
+	  };
+
+	  Vector2d.prototype.projection = function(b) {
+	    var c, scl;
+	    c = b.normalize();
+	    scl = this.mulScalar(b);
+	    return c.mul(scl);
+	  };
+
+	  Vector2d.prototype.rotate = function(a) {
+	    return Math.atan2(a.y, a.x) * 180 / Math.PI;
+	  };
+
+	  return Vector2d;
+
+	})();
+
+	module.exports = Vector2d;
+
+
+/***/ },
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./player.coffee": 7
+		"./player.coffee": 8
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -406,18 +477,54 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 6;
-
-
-/***/ },
-/* 7 */
-/***/ function(module, exports) {
-
-	module.exports = 'sprite player';
+	webpackContext.id = 7;
 
 
 /***/ },
 /* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Sprite, Vector2d, playerSprite;
+
+	Sprite = __webpack_require__(9);
+
+	Vector2d = __webpack_require__(6);
+
+	playerSprite = new Sprite({
+	  width: 10,
+	  height: 15,
+	  origin: new Vector2d(0, 0)
+	});
+
+	module.exports = playerSprite;
+
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Sprite, Vector2d;
+
+	Vector2d = __webpack_require__(6);
+
+	Sprite = (function() {
+	  function Sprite(opt) {
+	    var ref, ref1, ref2, ref3;
+	    if (!((opt != null) && (opt.origin != null) && opt.origin instanceof Vector2d)) {
+	      throw new Error('Не правильный тип');
+	    }
+	    this.width = (ref = opt.width) != null ? ref : 0, this.height = (ref1 = opt.height) != null ? ref1 : 0, this.origin = (ref2 = opt.origin) != null ? ref2 : new Vector2d(0, 0), this.image = (ref3 = opt.image) != null ? ref3 : null;
+	  }
+
+	  return Sprite;
+
+	})();
+
+	module.exports = Sprite;
+
+
+/***/ },
+/* 10 */
 /***/ function(module, exports) {
 
 	module.exports = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {

@@ -8,6 +8,8 @@ input = Input.getInstance()
 requireSprites = require.context 'game/sprite', true, /^\.\/.*\.(coffee|js)$/
 sprites = requireSprites.keys().map requireSprites
 
+console.log sprites[0]
+
 requestAnimationFrame = require 'core/module/requestAnimationFrame'
 
 lastTime = do Date.now
