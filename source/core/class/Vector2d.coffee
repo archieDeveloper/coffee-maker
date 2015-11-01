@@ -1,6 +1,6 @@
 class Vector2d
 
-  constructor: (@x, @y)->
+  constructor: (@x = 0, @y = 0)->
 
 # сложение векторов
   add: (b)->

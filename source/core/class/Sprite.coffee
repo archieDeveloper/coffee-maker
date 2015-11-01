@@ -2,14 +2,24 @@ Vector2d = require 'core/class/Vector2d'
 
 class Sprite
 
-  constructor: (opt)->
-    if not (opt? and opt.origin? and opt.origin instanceof Vector2d)
-      throw new Error('Не правильный тип')
+  constructor: (options)->
     {
       @width = 0
       @height = 0
-      @origin = new Vector2d 0, 0
+      @origin = new Vector2d
       @image = null
-    } = opt
+    } = options
+    if not (@origin instanceof Vector2d)
+      throw new Error 'No valid type'
+
+  setOriginCenter: ->
+    do @setOriginHorizontalCenter
+    do @setOriginVerticalCenter
+
+  setOriginVerticalCenter: ->
+    @origin.y = @height/2
+
+  setOriginHorizontalCenter: ->
+    @origin.x = @width/2
 
 module.exports = Sprite

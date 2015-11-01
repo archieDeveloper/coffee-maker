@@ -395,8 +395,8 @@
 
 	Vector2d = (function() {
 	  function Vector2d(x, y) {
-	    this.x = x;
-	    this.y = y;
+	    this.x = x != null ? x : 0;
+	    this.y = y != null ? y : 0;
 	  }
 
 	  Vector2d.prototype.add = function(b) {
@@ -492,9 +492,10 @@
 
 	playerSprite = new Sprite({
 	  width: 10,
-	  height: 15,
-	  origin: new Vector2d(0, 0)
+	  height: 10
 	});
+
+	playerSprite.setOriginCenter();
 
 	module.exports = playerSprite;
 
@@ -508,13 +509,26 @@
 	Vector2d = __webpack_require__(6);
 
 	Sprite = (function() {
-	  function Sprite(opt) {
+	  function Sprite(options) {
 	    var ref, ref1, ref2, ref3;
-	    if (!((opt != null) && (opt.origin != null) && opt.origin instanceof Vector2d)) {
-	      throw new Error('Не правильный тип');
+	    this.width = (ref = options.width) != null ? ref : 0, this.height = (ref1 = options.height) != null ? ref1 : 0, this.origin = (ref2 = options.origin) != null ? ref2 : new Vector2d, this.image = (ref3 = options.image) != null ? ref3 : null;
+	    if (!(this.origin instanceof Vector2d)) {
+	      throw new Error('No valid type');
 	    }
-	    this.width = (ref = opt.width) != null ? ref : 0, this.height = (ref1 = opt.height) != null ? ref1 : 0, this.origin = (ref2 = opt.origin) != null ? ref2 : new Vector2d(0, 0), this.image = (ref3 = opt.image) != null ? ref3 : null;
 	  }
+
+	  Sprite.prototype.setOriginCenter = function() {
+	    this.setOriginHorizontalCenter();
+	    return this.setOriginVerticalCenter();
+	  };
+
+	  Sprite.prototype.setOriginVerticalCenter = function() {
+	    return this.origin.y = this.height / 2;
+	  };
+
+	  Sprite.prototype.setOriginHorizontalCenter = function() {
+	    return this.origin.x = this.width / 2;
+	  };
 
 	  return Sprite;
 
