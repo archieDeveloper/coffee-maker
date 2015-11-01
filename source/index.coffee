@@ -1,27 +1,23 @@
-Resource = require 'core/module/Resource'
+Resource = require 'core/class/Resource'
+Input = require 'core/class/Input'
+Vector2d = require 'core/class/Vector2d'
+
 canvas = require 'core/module/canvas'
 context = canvas.getContext "2d"
-
-Input = require 'core/class/Input'
 input = Input.getInstance()
+resource = Resource.getInstance()
 
 requireSprites = require.context 'game/sprite', true, /^\.\/.*\.(coffee|js)$/
 sprites = requireSprites.keys().map requireSprites
-
-console.log sprites[0]
 
 requestAnimationFrame = require 'core/module/requestAnimationFrame'
 
 lastTime = do Date.now
 
 step = ->
-#    console.log input.keyboard.isPressed(65)
-#    console.log input.keyboard.isDown(65)
 
 draw = ->
   context.clearRect 0, 0, canvas.width, canvas.height
-
-count = 0
 
 gameLoop = ->
   now = do Date.now
@@ -33,7 +29,7 @@ gameLoop = ->
 
   context.fillStyle = "#000"
   context.font = "12pt Arial"
-  context.fillText 'fps: ' + Math.round(fps), 20, 20
+  context.fillText 'fps: '+Math.round(fps), 20, 20
 
   lastTime = now
   requestAnimationFrame gameLoop
@@ -45,12 +41,6 @@ init = ->
   do gameLoop
 
 loadImage = ->
-  do init
-#    arrayUrlImg = []
-#    for item of sprites
-#        if typeof sprites[item].img == 'string'
-#            arrayUrlImg.push('./coffeeMaker/app/images/'+sprites[item].img)
-#    resources.load arrayUrlImg
-#    resources.onReady init
+    resource.onReady do init
 
 window.onload = loadImage

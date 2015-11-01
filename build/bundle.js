@@ -44,23 +44,25 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Input, Resource, canvas, context, count, draw, gameLoop, init, input, lastTime, loadImage, requestAnimationFrame, requireSprites, sprites, step;
+	var Input, Resource, Vector2d, canvas, context, draw, gameLoop, init, input, lastTime, loadImage, requestAnimationFrame, requireSprites, resource, sprites, step;
 
-	Resource = __webpack_require__(1);
+	Resource = __webpack_require__(11);
+
+	Input = __webpack_require__(3);
+
+	Vector2d = __webpack_require__(6);
 
 	canvas = __webpack_require__(2);
 
 	context = canvas.getContext("2d");
 
-	Input = __webpack_require__(3);
-
 	input = Input.getInstance();
+
+	resource = Resource.getInstance();
 
 	requireSprites = __webpack_require__(7);
 
 	sprites = requireSprites.keys().map(requireSprites);
-
-	console.log(sprites[0]);
 
 	requestAnimationFrame = __webpack_require__(10);
 
@@ -71,8 +73,6 @@
 	draw = function() {
 	  return context.clearRect(0, 0, canvas.width, canvas.height);
 	};
-
-	count = 0;
 
 	gameLoop = function() {
 	  var dt, fps, now;
@@ -96,83 +96,14 @@
 	};
 
 	loadImage = function() {
-	  return init();
+	  return resource.onReady(init());
 	};
 
 	window.onload = loadImage;
 
 
 /***/ },
-/* 1 */
-/***/ function(module, exports) {
-
-	var Resource, loadImage, loading, readyCallbacks, resourceCache;
-
-	resourceCache = {};
-
-	loading = [];
-
-	readyCallbacks = [];
-
-	loadImage = function(url) {
-	  var img;
-	  if (resourceCache[url]) {
-	    return resourceCache[url];
-	  } else {
-	    img = new Image;
-	    img.onload = function() {
-	      resourceCache[url] = img;
-	      if (isReady()) {
-	        return readyCallbacks.forEach(function(func) {
-	          return func();
-	        });
-	      }
-	    };
-	    resourceCache[url] = false;
-	    return img.src = url;
-	  }
-	};
-
-	Resource = (function() {
-	  function Resource() {}
-
-	  Resource.prototype.load = function(urlOrArr) {
-	    if (urlOrArr instanceof Array) {
-	      return urlOrArr.forEach(function(url) {
-	        return loadImage(url);
-	      });
-	    } else {
-	      return loadImage(urlOrArr);
-	    }
-	  };
-
-	  Resource.prototype.get = function(url) {
-	    return resourceCache[url];
-	  };
-
-	  Resource.prototype.isReady = function() {
-	    var k, ready;
-	    ready = true;
-	    for (k in resourceCache) {
-	      if (resourceCache.hasOwnProperty(k) && !resourceCache[k]) {
-	        ready = false;
-	      }
-	    }
-	    return ready;
-	  };
-
-	  Resource.prototype.onReady = function(func) {
-	    return readyCallbacks.push(func);
-	  };
-
-	  return Resource;
-
-	})();
-
-	module.exports = Resource;
-
-
-/***/ },
+/* 1 */,
 /* 2 */
 /***/ function(module, exports) {
 
@@ -491,8 +422,9 @@
 	Vector2d = __webpack_require__(6);
 
 	playerSprite = new Sprite({
-	  width: 10,
-	  height: 10
+	  width: 77,
+	  height: 32,
+	  image: 'player.png'
 	});
 
 	playerSprite.setOriginCenter();
@@ -504,14 +436,27 @@
 /* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Sprite, Vector2d;
+	var Resource, Sprite, Vector2d, canvas, context, resource;
 
 	Vector2d = __webpack_require__(6);
 
+	Resource = __webpack_require__(11);
+
+	canvas = __webpack_require__(2);
+
+	context = canvas.getContext('2d');
+
+	resource = Resource.getInstance();
+
 	Sprite = (function() {
 	  function Sprite(options) {
-	    var ref, ref1, ref2, ref3;
-	    this.width = (ref = options.width) != null ? ref : 0, this.height = (ref1 = options.height) != null ? ref1 : 0, this.origin = (ref2 = options.origin) != null ? ref2 : new Vector2d, this.image = (ref3 = options.image) != null ? ref3 : null;
+	    var ref, ref1, ref2;
+	    this.width = (ref = options.width) != null ? ref : 0, this.height = (ref1 = options.height) != null ? ref1 : 0, this.origin = (ref2 = options.origin) != null ? ref2 : new Vector2d, this.image = options.image;
+	    if (this.image == null) {
+	      throw new Error('No image');
+	    } else {
+	      this.image = resource.load('/coffeeMaker/source/game/resource/images/' + this.image);
+	    }
 	    if (!(this.origin instanceof Vector2d)) {
 	      throw new Error('No valid type');
 	    }
@@ -530,6 +475,15 @@
 	    return this.origin.x = this.width / 2;
 	  };
 
+	  Sprite.prototype.draw = function(position) {
+	    if (!(position instanceof Vector2d)) {
+	      new Error('No valid type');
+	    }
+	    context.save();
+	    context.drawImage(resource.get(this.image), position.x - this.origin.x, position.y - this.origin.y, this.width, this.height);
+	    return context.restore();
+	  };
+
 	  return Sprite;
 
 	})();
@@ -544,6 +498,87 @@
 	module.exports = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
 	  window.setTimeout(callback, 1000 / 60);
 	};
+
+
+/***/ },
+/* 11 */
+/***/ function(module, exports) {
+
+	var Resource;
+
+	Resource = (function() {
+	  var getImage, instance, loadImage, loading, readyCallbacks, resourceCache;
+
+	  instance = null;
+
+	  resourceCache = {};
+
+	  loading = [];
+
+	  readyCallbacks = [];
+
+	  function Resource() {}
+
+	  Resource.getInstance = function() {
+	    if (instance == null) {
+	      instance = new Resource;
+	    }
+	    return instance;
+	  };
+
+	  Resource.prototype.load = function(urlOrArr) {
+	    if (urlOrArr instanceof Array) {
+	      return urlOrArr.forEach(function(url) {
+	        return getImage(url);
+	      });
+	    } else {
+	      return getImage(urlOrArr);
+	    }
+	  };
+
+	  Resource.prototype.get = function(url) {
+	    return resourceCache[url];
+	  };
+
+	  Resource.prototype.isReady = function() {
+	    var k, ready;
+	    ready = true;
+	    for (k in resourceCache) {
+	      if (resourceCache.hasOwnProperty(k) && !resourceCache[k]) {
+	        ready = false;
+	      }
+	    }
+	    return ready;
+	  };
+
+	  Resource.prototype.onReady = function(func) {
+	    return readyCallbacks.push(func);
+	  };
+
+	  getImage = function(url) {
+	    return resourceCache[url] || loadImage(url);
+	  };
+
+	  loadImage = function(url) {
+	    var img;
+	    img = new Image;
+	    img.onload = function() {
+	      resourceCache[url] = img;
+	      if (Resource.prototype.isReady()) {
+	        return readyCallbacks.forEach(function(func) {
+	          return func();
+	        });
+	      }
+	    };
+	    resourceCache[url] = false;
+	    return img.src = url;
+	  };
+
+	  return Resource;
+
+	})();
+
+	module.exports = Resource;
 
 
 /***/ }

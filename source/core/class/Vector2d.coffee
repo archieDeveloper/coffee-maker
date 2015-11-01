@@ -2,54 +2,54 @@ class Vector2d
 
   constructor: (@x = 0, @y = 0)->
 
-# сложение векторов
+  # сложение векторов
   add: (b)->
     @x += b.x
     @y += b.y
     @
 
-# вычитание векторов
+  # вычитание векторов
   sub: (b)->
     @x -= b.x
     @y -= b.y
     @
 
-# умножение вектора на скаляр
+  # умножение вектора на скаляр
   mul: (scalar)->
     @x *= scalar
     @y *= scalar
     @
 
-# деление вектора на скаляр
+  # деление вектора на скаляр
   div: (scalar)->
     @x /= scalar
     @y /= scalar
     @
 
-# умножение векторов
+  # умножение векторов
   mulScalar: (b)->
     @x *= b.x
     @y *= b.y
     @
 
-# длина вектора
+  # длина вектора
   length: ()->
     Math.sqrt @x * @x + @y * @y
 
-# нормализация вектора
+  # нормализация вектора
   normalize: ()->
     len = do @length
     @x /= len
     @y /= len
     @
 
-# проецирование вектора
+  # проецирование вектора
   projection: (b)->
     c = do b.normalize
     scl = @mulScalar(b)
     c.mul(scl)
 
-# поворот вектора
+  # поворот вектора
   rotate: (a)->
     Math.atan2(a.y, a.x) * 180 / Math.PI
 
