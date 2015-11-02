@@ -1,3 +1,6 @@
+# Класс для работы с векторами
+#
+# @author Arkady Kozhedub <arkadij.ok@gmail.com>
 class Vector2d
 
   constructor: (@x = 0, @y = 0)->

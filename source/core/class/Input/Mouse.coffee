@@ -1,14 +1,24 @@
 canvas = require 'core/module/canvas'
 Vector2d = require 'core/class/Vector2d'
 
+# Класс для работы с контроллером мыши
+#
+# @author Arkady Kozhedub <arkadij.ok@gmail.com>
 class Mouse
 
+  # @property [Object<Number>] объект со списком нажатых клавиш
   mousePress = {}
+
+  # @property [Object<Number>] объект со списком нажатых клавиш
   mouseDown  = {}
+
+  # @property [Object<Number>] объект со списком отпущенных клавиш
   mouseUp    = {}
 
+  # @property [Mouse] ссылка на самого себя
   instance   = null
 
+  # @property [Vector2d] позиция мыши
   position: new Vector2d 0, 0
 
   constructor: ->
@@ -24,17 +34,35 @@ class Mouse
     canvas.oncontextmenu = ()->
       false
 
+  # Получить экзепляр самого себя
+  #
+  # @return [Mouse]
   @getInstance: ->
     if not instance?
       instance = new Mouse
     instance
 
+  # Проверяет нажата ли указанная клавиша
+  #
+  # @param [Number] code Код клавиши
+  #
+  # @return [Boolean]
   isPressed: (code)->
     mousePress[code]?
 
+  # Проверяет нажатие указанной клавиши
+  #
+  # @param [Number] code Код клавиши
+  #
+  # @return [Boolean]
   isDown: (code)->
     mouseDown[code]?
 
+  # Проверяет отпускание указанной клавиши
+  #
+  # @param [Number] code Код клавиши
+  #
+  # @return [Boolean]
   isUp: (code)->
     mouseUp[code]?
 

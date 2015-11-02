@@ -1,6 +1,7 @@
 
 # Класс по работе с ресурсами
 #
+# @author Arkady Kozhedub <arkadij.ok@gmail.com>
 class Resource
 
   # @property [Resource] Ссылка на самого себя

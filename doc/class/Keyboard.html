@@ -39,11 +39,12 @@
     <span class='signature'>
       <a href='#getInstance-static'>
         .
-(void)
+(Keyboard)
 <b>getInstance</b><span>()</span>
       </a>
     </span>
     <span class='desc'>
+      Получить экзепляр самого себя 
     </span>
   </li>
 </ul>
@@ -53,33 +54,36 @@
     <span class='signature'>
       <a href='#isPressed-dynamic'>
         #
-(void)
+(Boolean)
 <b>isPressed</b><span>(code)</span>
       </a>
     </span>
     <span class='desc'>
+      Проверяет нажатие указанной клавиши 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#isDown-dynamic'>
         #
-(void)
+(Boolean)
 <b>isDown</b><span>(code)</span>
       </a>
     </span>
     <span class='desc'>
+      Проверяет нажатие указанной клавиши 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#isUp-dynamic'>
         #
-(void)
+(Boolean)
 <b>isUp</b><span>(code)</span>
       </a>
     </span>
     <span class='desc'>
+      Проверяет отпускание указанной клавиши 
     </span>
   </li>
 </ul>
@@ -88,11 +92,22 @@
   <div class='method_details'>
     <p class='signature' id='getInstance-static'>
       .
-(void)
+(Keyboard)
 <b>getInstance</b><span>()</span>
       <br>
     </p>
-    
+    <div class='docstring'>
+  <p>Получить экзепляр самого себя</p>
+</div>
+<div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      <tt><a href='../class/Keyboard.html'>Keyboard</a></tt>
+    </li>
+  </ul>
+</div>
   </div>
 </div>
       <h2>Constructor Details</h2>
@@ -112,34 +127,106 @@
   <div class='method_details'>
     <p class='signature' id='isPressed-dynamic'>
       #
-(void)
+(Boolean)
 <b>isPressed</b><span>(code)</span>
       <br>
     </p>
-    
+    <div class='docstring'>
+  <p>Проверяет нажатие указанной клавиши</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>code</span>
+      <span class='type'>
+        (
+          <tt>Number</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Код клавиши </span>
+    </li>
+  </ul>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      <tt>Boolean</tt>
+    </li>
+  </ul>
+</div>
   </div>
   <div class='method_details'>
     <p class='signature' id='isDown-dynamic'>
       #
-(void)
+(Boolean)
 <b>isDown</b><span>(code)</span>
       <br>
     </p>
-    
+    <div class='docstring'>
+  <p>Проверяет нажатие указанной клавиши</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>code</span>
+      <span class='type'>
+        (
+          <tt>Number</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Код клавиши </span>
+    </li>
+  </ul>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      <tt>Boolean</tt>
+    </li>
+  </ul>
+</div>
   </div>
   <div class='method_details'>
     <p class='signature' id='isUp-dynamic'>
       #
-(void)
+(Boolean)
 <b>isUp</b><span>(code)</span>
       <br>
     </p>
-    
+    <div class='docstring'>
+  <p>Проверяет отпускание указанной клавиши</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>code</span>
+      <span class='type'>
+        (
+          <tt>Number</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Код клавиши </span>
+    </li>
+  </ul>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      <tt>Boolean</tt>
+    </li>
+  </ul>
+</div>
   </div>
 </div>
     </div>
     <div id='footer'>
-  November 02, 15 18:32:19 by
+  November 02, 15 19:19:55 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>
