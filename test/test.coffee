@@ -1,9 +1,23 @@
 chai = require 'chai'
 do chai.should
 assert = chai.assert
-describe('#indexOf()', ->
-    it('should return -1 when the value is not present', ->
-        assert.equal(-1, [1,2,3].indexOf(5))
-        assert.equal(-1, [1,2,3].indexOf(0))
-    )
-)
+
+Vector2d = require '../source/core/class/Vector2d'
+
+describe '#Vector2d', ->
+  before ->
+    console.log "Начало тестов"
+
+  after ->
+    console.log "Конец тестов"
+
+  beforeEach ->
+    console.log "Вход в тест"
+
+  afterEach ->
+    console.log "Выход из теста"
+
+  it 'тест 1', ->
+    console.log '1'
+  it 'тест 2', ->
+    console.log '2'
