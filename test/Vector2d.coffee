@@ -115,7 +115,7 @@ describe '#Vector2d', ->
     beforeEach ->
       firstVector2d = new Vector2d 2, 8
       secondVector2d = new Vector2d 5, 6
-    it 'Возвращается объект который вызывал метод div', ->
+    it 'Возвращается объект который вызывал метод mulScalar', ->
       newVector2d = firstVector2d.mulScalar secondVector2d
       assert.instanceOf newVector2d, Vector2d, 'Не является экземпляром класса Vector2d'
       assert.strictEqual newVector2d, firstVector2d, 'Не является тем же самым объектом'
