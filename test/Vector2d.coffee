@@ -177,10 +177,10 @@ describe '#Vector2d', ->
     it 'Проецирует вектор', ->
       cloneSecondVector2d = do secondVector2d.clone
       firstVector2d.projection secondVector2d
-      a = (firstVector2d.x * secondVector2d.x)+(firstVector2d.y * secondVector2d.y)
-      b = (secondVector2d.x*secondVector2d.x)+(secondVector2d.y*secondVector2d.y)
-      coeff = a / b
-      assert.strictEqual firstVector2d.x, coeff * secondVector2d.x, 'Не правильный результат нормализации в свойстве X'
-      assert.strictEqual firstVector2d.y, coeff * secondVector2d.y, 'Не правильный результат нормализации в свойстве Y'
+      a = (2 * 5)+(4 * 8)
+      b = (5*5)+(8*8)
+      c = a / b
+      assert.strictEqual firstVector2d.x, c * secondVector2d.x, 'Не правильный результат нормализации в свойстве X'
+      assert.strictEqual firstVector2d.y, c * secondVector2d.y, 'Не правильный результат нормализации в свойстве Y'
       assert.strictEqual cloneSecondVector2d.x, secondVector2d.x, 'Вычисление проекции не должно изменять свойство X у входящего вектора'
       assert.strictEqual cloneSecondVector2d.y, secondVector2d.y, 'Вычисление проекции не должно изменять свойство Y у входящего вектора'
