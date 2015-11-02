@@ -45,7 +45,7 @@
     <span class='signature'>
       <a href='#getInstance-static'>
         .
-(void)
+(Resource)
 <b>getInstance</b><span>()</span>
       </a>
     </span>
@@ -60,7 +60,7 @@
     <span class='signature'>
       <a href='#load-dynamic'>
         #
-(void)
+(Image)
 <b>load</b><span>(urlOrArr)</span>
       </a>
     </span>
@@ -84,11 +84,12 @@
     <span class='signature'>
       <a href='#isReady-dynamic'>
         #
-(void)
+(Boolean)
 <b>isReady</b><span>()</span>
       </a>
     </span>
     <span class='desc'>
+      Проверяет готовы ли ресурсы 
     </span>
   </li>
   <li>
@@ -100,6 +101,7 @@
       </a>
     </span>
     <span class='desc'>
+      Добавляет функцию в список callback&#39;оф 
     </span>
   </li>
 </ul>
@@ -108,7 +110,7 @@
   <div class='method_details'>
     <p class='signature' id='getInstance-static'>
       .
-(void)
+(Resource)
 <b>getInstance</b><span>()</span>
       <br>
     </p>
@@ -116,6 +118,13 @@
   <p>Получить экзепляр самого себя</p>
 </div>
 <div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      <tt><a href='../class/Resource.html'>Resource</a></tt>
+    </li>
+  </ul>
 </div>
   </div>
 </div>
@@ -136,7 +145,7 @@
   <div class='method_details'>
     <p class='signature' id='load-dynamic'>
       #
-(void)
+(Image)
 <b>load</b><span>(urlOrArr)</span>
       <br>
     </p>
@@ -155,6 +164,13 @@
       </span>
       &mdash;
       <span class='desc'>Url до изображения или массив Url&#39;ов </span>
+    </li>
+  </ul>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      <tt>Image</tt>
     </li>
   </ul>
 </div>
@@ -195,11 +211,22 @@
   <div class='method_details'>
     <p class='signature' id='isReady-dynamic'>
       #
-(void)
+(Boolean)
 <b>isReady</b><span>()</span>
       <br>
     </p>
-    
+    <div class='docstring'>
+  <p>Проверяет готовы ли ресурсы</p>
+</div>
+<div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      <tt>Boolean</tt>
+    </li>
+  </ul>
+</div>
   </div>
   <div class='method_details'>
     <p class='signature' id='onReady-dynamic'>
@@ -208,12 +235,29 @@
 <b>onReady</b><span>(func)</span>
       <br>
     </p>
-    
+    <div class='docstring'>
+  <p>Добавляет функцию в список callback&#39;оф</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>func</span>
+      <span class='type'>
+        (
+          <tt>Function</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Callback который отработает как только закончится загрузка ресурсов </span>
+    </li>
+  </ul>
+</div>
   </div>
 </div>
     </div>
     <div id='footer'>
-  November 01, 15 18:38:47 by
+  November 02, 15 18:32:19 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

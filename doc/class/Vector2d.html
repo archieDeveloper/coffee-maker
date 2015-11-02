@@ -39,108 +39,108 @@
     <span class='signature'>
       <a href='#add-dynamic'>
         #
-(void)
+(Vector2d)
 <b>add</b><span>(b)</span>
       </a>
     </span>
     <span class='desc'>
-      сложение векторов 
+      Сложение векторов 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#sub-dynamic'>
         #
-(void)
+(Vector2d)
 <b>sub</b><span>(b)</span>
       </a>
     </span>
     <span class='desc'>
-      вычитание векторов 
+      Вычитание векторов 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#mul-dynamic'>
         #
-(void)
+(Vector2d)
 <b>mul</b><span>(scalar)</span>
       </a>
     </span>
     <span class='desc'>
-      умножение вектора на скаляр 
+      Умножение вектора на скаляр 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#div-dynamic'>
         #
-(void)
+(Vector2d)
 <b>div</b><span>(scalar)</span>
       </a>
     </span>
     <span class='desc'>
-      деление вектора на скаляр 
+      Деление вектора на скаляр 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#mulScalar-dynamic'>
         #
-(void)
+(Vector2d)
 <b>mulScalar</b><span>(b)</span>
       </a>
     </span>
     <span class='desc'>
-      умножение векторов 
+      Умножение векторов 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#length-dynamic'>
         #
-(void)
+(Number)
 <b>length</b><span>()</span>
       </a>
     </span>
     <span class='desc'>
-      длина вектора 
+      Длина вектора 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#normalize-dynamic'>
         #
-(void)
+(Vector2d)
 <b>normalize</b><span>()</span>
       </a>
     </span>
     <span class='desc'>
-      нормализация вектора 
+      Нормализация вектора 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#projection-dynamic'>
         #
-(void)
+(Vector2d)
 <b>projection</b><span>(b)</span>
       </a>
     </span>
     <span class='desc'>
-      проецирование вектора 
+      Проецирование вектора 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#rotate-dynamic'>
         #
-(void)
-<b>rotate</b><span>(a)</span>
+(Number)
+<b>rotate</b><span>()</span>
       </a>
     </span>
     <span class='desc'>
-      поворот вектора 
+      Поворот вектора 
     </span>
   </li>
 </ul>
@@ -161,124 +161,289 @@
   <div class='method_details'>
     <p class='signature' id='add-dynamic'>
       #
-(void)
+(Vector2d)
 <b>add</b><span>(b)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>сложение векторов</p>
+  <p>Сложение векторов</p>
 </div>
 <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>Вектор</span>
+      <span class='type'>
+        (
+          <tt><a href='../class/Vector2d.html'>Vector2d</a></tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>который прибавляется </span>
+    </li>
+  </ul>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt><a href='../class/Vector2d.html'>Vector2d</a></tt>
+      )
+      &mdash;
+      <span class='desc'>Возвращает самого себя </span>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
     <p class='signature' id='sub-dynamic'>
       #
-(void)
+(Vector2d)
 <b>sub</b><span>(b)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>вычитание векторов</p>
+  <p>Вычитание векторов</p>
 </div>
 <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>Вектор</span>
+      <span class='type'>
+        (
+          <tt><a href='../class/Vector2d.html'>Vector2d</a></tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>который вычитается </span>
+    </li>
+  </ul>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt><a href='../class/Vector2d.html'>Vector2d</a></tt>
+      )
+      &mdash;
+      <span class='desc'>Возвращает самого себя </span>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
     <p class='signature' id='mul-dynamic'>
       #
-(void)
+(Vector2d)
 <b>mul</b><span>(scalar)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>умножение вектора на скаляр</p>
+  <p>Умножение вектора на скаляр</p>
 </div>
 <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>Скалярное</span>
+      <span class='type'>
+        (
+          <tt>Number</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>число на которое нужно умножить </span>
+    </li>
+  </ul>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt><a href='../class/Vector2d.html'>Vector2d</a></tt>
+      )
+      &mdash;
+      <span class='desc'>Возвращает самого себя </span>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
     <p class='signature' id='div-dynamic'>
       #
-(void)
+(Vector2d)
 <b>div</b><span>(scalar)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>деление вектора на скаляр</p>
+  <p>Деление вектора на скаляр</p>
 </div>
 <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>Скалярное</span>
+      <span class='type'>
+        (
+          <tt>Number</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>число на которое нужно поделить </span>
+    </li>
+  </ul>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt><a href='../class/Vector2d.html'>Vector2d</a></tt>
+      )
+      &mdash;
+      <span class='desc'>Возвращает самого себя </span>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
     <p class='signature' id='mulScalar-dynamic'>
       #
-(void)
+(Vector2d)
 <b>mulScalar</b><span>(b)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>умножение векторов</p>
+  <p>Умножение векторов</p>
 </div>
 <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>Вектор</span>
+      <span class='type'>
+        (
+          <tt><a href='../class/Vector2d.html'>Vector2d</a></tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>с которым перемножается </span>
+    </li>
+  </ul>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt><a href='../class/Vector2d.html'>Vector2d</a></tt>
+      )
+      &mdash;
+      <span class='desc'>Возвращает самого себя </span>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
     <p class='signature' id='length-dynamic'>
       #
-(void)
+(Number)
 <b>length</b><span>()</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>длина вектора</p>
+  <p>Длина вектора</p>
 </div>
 <div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      <tt>Number</tt>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
     <p class='signature' id='normalize-dynamic'>
       #
-(void)
+(Vector2d)
 <b>normalize</b><span>()</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>нормализация вектора</p>
+  <p>Нормализация вектора</p>
 </div>
 <div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt><a href='../class/Vector2d.html'>Vector2d</a></tt>
+      )
+      &mdash;
+      <span class='desc'>Возвращает самого себя </span>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
     <p class='signature' id='projection-dynamic'>
       #
-(void)
+(Vector2d)
 <b>projection</b><span>(b)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>проецирование вектора</p>
+  <p>Проецирование вектора</p>
 </div>
 <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>Вектор</span>
+      <span class='type'>
+        (
+          <tt><a href='../class/Vector2d.html'>Vector2d</a></tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>на который проецируется </span>
+    </li>
+  </ul>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      <tt><a href='../class/Vector2d.html'>Vector2d</a></tt>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
     <p class='signature' id='rotate-dynamic'>
       #
-(void)
-<b>rotate</b><span>(a)</span>
+(Number)
+<b>rotate</b><span>()</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>поворот вектора</p>
+  <p>Поворот вектора</p>
 </div>
 <div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      <tt>Number</tt>
+    </li>
+  </ul>
 </div>
   </div>
 </div>
     </div>
     <div id='footer'>
-  November 01, 15 18:38:47 by
+  November 02, 15 18:32:19 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

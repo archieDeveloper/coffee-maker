@@ -2,55 +2,85 @@ class Vector2d
 
   constructor: (@x = 0, @y = 0)->
 
-  # сложение векторов
+  # Сложение векторов
+  #
+  # @param [Vector2d] Вектор который прибавляется
+  #
+  # @return [Vector2d] Возвращает самого себя
   add: (b)->
     @x += b.x
     @y += b.y
     @
 
-  # вычитание векторов
+  # Вычитание векторов
+  #
+  # @param [Vector2d] Вектор который вычитается
+  #
+  # @return [Vector2d] Возвращает самого себя
   sub: (b)->
     @x -= b.x
     @y -= b.y
     @
 
-  # умножение вектора на скаляр
+  # Умножение вектора на скаляр
+  #
+  # @param [Number] Скалярное число на которое нужно умножить
+  #
+  # @return [Vector2d] Возвращает самого себя
   mul: (scalar)->
     @x *= scalar
     @y *= scalar
     @
 
-  # деление вектора на скаляр
+  # Деление вектора на скаляр
+  #
+  # @param [Number] Скалярное число на которое нужно поделить
+  #
+  # @return [Vector2d] Возвращает самого себя
   div: (scalar)->
     @x /= scalar
     @y /= scalar
     @
 
-  # умножение векторов
+  # Умножение векторов
+  #
+  # @param [Vector2d] Вектор с которым перемножается
+  #
+  # @return [Vector2d] Возвращает самого себя
   mulScalar: (b)->
     @x *= b.x
     @y *= b.y
     @
 
-  # длина вектора
+  # Длина вектора
+  #
+  # @return [Number]
   length: ()->
     Math.sqrt @x * @x + @y * @y
 
-  # нормализация вектора
+  # Нормализация вектора
+  #
+  # @return [Vector2d] Возвращает самого себя
   normalize: ()->
     len = do @length
     @x /= len
     @y /= len
     @
 
-  # проецирование вектора
+  # Проецирование вектора
+  #
+  # @param [Vector2d] Вектор на который проецируется
+  #
+  # @return [Vector2d]
   projection: (b)->
     c = do b.normalize
     scl = @mulScalar(b)
     c.mul(scl)
 
-  # поворот вектора
-  rotate: (a)->
-    Math.atan2(a.y, a.x) * 180 / Math.PI
+  # Поворот вектора
+  #
+  # @return [Number]
+  rotate: ()->
+    Math.atan2(@y, @x) * 180 / Math.PI
 
 module.exports = Vector2d
