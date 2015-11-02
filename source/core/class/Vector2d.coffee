@@ -76,9 +76,13 @@ class Vector2d
   #
   # @return [Vector2d]
   projection: (b)->
-    c = do b.normalize
-    scl = @mulScalar(b)
-    c.mul(scl)
+    c = ((@x * b.x)+(@y * b.y)) / ((b.x*b.x)+(b.y*b.y))
+    @x = b.x * c
+    @y = b.y * c
+    @
+
+  clone: ->
+    new Vector2d @x, @y
 
   # Поворот вектора
   #

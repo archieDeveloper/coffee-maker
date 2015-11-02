@@ -4,7 +4,7 @@
   "description": "engine games",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --compilers coffee:coffee-script/register"
+    "test": "mocha --compilers coffee:coffee-script/register --watch"
   },
   "author": "Arkadij Kozhedub <arkadij.ok@gmail.com>",
   "license": "BSD-2-Clause",
