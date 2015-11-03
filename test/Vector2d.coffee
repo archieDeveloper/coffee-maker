@@ -33,13 +33,13 @@ describe '#Vector2d', ->
   describe 'Существование методов', ->
     methods = [
       'clone'
-      'add' 'addX' 'addY'
-      'subtract' 'subtractX' 'subtractY'
-      'multiply' 'multiplyX' 'multiplyY'
-      'divide' 'divideX' 'divideY'
-      'invert' 'invertX' 'invertY'
-      'multiplyScalar' 'multiplyScalarX' 'multiplyScalarY'
-      'length' 'normalize' 'unfloat'
+      'add', 'addX', 'addY'
+      'subtract', 'subtractX', 'subtractY'
+      'multiply', 'multiplyX', 'multiplyY'
+      'divide', 'divideX', 'divideY'
+      'invert', 'invertX', 'invertY'
+      'multiplyScalar', 'multiplyScalarX', 'multiplyScalarY'
+      'length', 'normalize', 'unfloat'
       'isZero'
     ]
     isset = (method)->
@@ -89,7 +89,7 @@ describe '#Vector2d', ->
       firstVector2d = new Vector2d 2, 8
       secondVector2d = new Vector2d 5, 6
     it 'Возвращается объект который вызывал метод addX', ->
-      newVector2d = firstVector2d.add secondVector2d
+      newVector2d = firstVector2d.addX secondVector2d
       assert.instanceOf newVector2d, Vector2d, 'Не является экземпляром класса Vector2d'
       assert.strictEqual newVector2d, firstVector2d, 'Не является тем же самым объектом'
     it 'Сложение векторов', ->
@@ -107,12 +107,12 @@ describe '#Vector2d', ->
       firstVector2d = new Vector2d 2, 8
       secondVector2d = new Vector2d 5, 6
     it 'Возвращается объект который вызывал метод addY', ->
-      newVector2d = firstVector2d.add secondVector2d
+      newVector2d = firstVector2d.addY secondVector2d
       assert.instanceOf newVector2d, Vector2d, 'Не является экземпляром класса Vector2d'
       assert.strictEqual newVector2d, firstVector2d, 'Не является тем же самым объектом'
     it 'Сложение векторов', ->
       cloneSecondVector2d = do secondVector2d.clone
-      firstVector2d.addX secondVector2d
+      firstVector2d.addY secondVector2d
       assert.strictEqual firstVector2d.x, 2, 'Не правильный результат сложения в свойстве X'
       assert.strictEqual firstVector2d.y, 8+6, 'Не правильный результат сложения в свойстве Y'
       assert.strictEqual cloneSecondVector2d.x, secondVector2d.x, 'Сложение не должно изменять свойство X у входящего вектора'
@@ -125,12 +125,12 @@ describe '#Vector2d', ->
       firstVector2d = new Vector2d 2, 8
       secondVector2d = new Vector2d 5, 6
     it 'Возвращается объект который вызывал метод subtract', ->
-      newVector2d = firstVector2d.sub secondVector2d
+      newVector2d = firstVector2d.subtract secondVector2d
       assert.instanceOf newVector2d, Vector2d, 'Не является экземпляром класса Vector2d'
       assert.strictEqual newVector2d, firstVector2d, 'Не является тем же самым объектом'
     it 'Вычитание векторов', ->
       cloneSecondVector2d = do secondVector2d.clone
-      firstVector2d.sub secondVector2d
+      firstVector2d.subtract secondVector2d
       assert.strictEqual firstVector2d.x, 2-5, 'Не правильный результат вычитание в свойстве X'
       assert.strictEqual firstVector2d.y, 8-6, 'Не правильный результат вычитания в свойстве Y'
       assert.strictEqual cloneSecondVector2d.x, secondVector2d.x, 'Вычитание не должно изменять свойство X у входящего вектора'
@@ -143,12 +143,12 @@ describe '#Vector2d', ->
       vec1 = new Vector2d 2, 8
       vec2 = new Vector2d 5, 6
     it 'Возвращается объект который вызывал метод subtractX', ->
-      vec1New = vec1.sub vec2
+      vec1New = vec1.subtractX vec2
       assert.instanceOf vec1New, Vector2d, 'Не является экземпляром класса Vector2d'
       assert.strictEqual vec1New, vec1, 'Не является тем же самым объектом'
     it 'Вычитание векторов', ->
       vec2Clone = do vec2.clone
-      vec1.sub vec2
+      vec1.subtractX vec2
       assert.strictEqual vec1.x, 2-5, 'Не правильный результат вычитание в свойстве X'
       assert.strictEqual vec1.y, 8, 'Не правильный результат вычитания в свойстве Y'
       assert.strictEqual vec2Clone.x, vec2.x, 'Вычитание не должно изменять свойство X у входящего вектора'
@@ -161,12 +161,12 @@ describe '#Vector2d', ->
       vec1 = new Vector2d 2, 8
       vec2 = new Vector2d 5, 6
     it 'Возвращается объект который вызывал метод subtractY', ->
-      vec1New = vec1.sub vec2
+      vec1New = vec1.subtractY vec2
       assert.instanceOf vec1New, Vector2d, 'Не является экземпляром класса Vector2d'
       assert.strictEqual vec1New, vec1, 'Не является тем же самым объектом'
     it 'Вычитание векторов', ->
       vec2Clone = do vec2.clone
-      vec1.sub vec2
+      vec1.subtractY vec2
       assert.strictEqual vec1.x, 2, 'Не правильный результат вычитание в свойстве X'
       assert.strictEqual vec1.y, 8-6, 'Не правильный результат вычитания в свойстве Y'
       assert.strictEqual vec2Clone.x, vec2.x, 'Вычитание не должно изменять свойство X у входящего вектора'
@@ -179,11 +179,11 @@ describe '#Vector2d', ->
       vector2d = new Vector2d 2, 8
       scalar = 3
     it 'Возвращается объект который вызывал метод multiply', ->
-      newVector2d = vector2d.mul scalar
+      newVector2d = vector2d.multiply scalar
       assert.instanceOf newVector2d, Vector2d, 'Не является экземпляром класса Vector2d'
       assert.strictEqual newVector2d, vector2d, 'Не является тем же самым объектом'
     it 'Умножение на скаляр', ->
-      vector2d.mul scalar
+      vector2d.multiply scalar
       assert.strictEqual vector2d.x, 2*3, 'Не правильный результат умножения в свойстве X'
       assert.strictEqual vector2d.y, 8*3, 'Не правильный результат умножения в свойстве Y'
 
@@ -194,11 +194,11 @@ describe '#Vector2d', ->
       vec1 = new Vector2d 2, 8
       scalar = 3
     it 'Возвращается объект который вызывал метод multiplyX', ->
-      vec1New = vec1.mul scalar
+      vec1New = vec1.multiplyX scalar
       assert.instanceOf vec1New, Vector2d, 'Не является экземпляром класса Vector2d'
       assert.strictEqual vec1New, vec1, 'Не является тем же самым объектом'
     it 'Умножение на скаляр', ->
-      vec1.mul scalar
+      vec1.multiplyX scalar
       assert.strictEqual vec1.x, 2*3, 'Не правильный результат умножения в свойстве X'
       assert.strictEqual vec1.y, 8, 'Не правильный результат умножения в свойстве Y'
 
@@ -209,11 +209,11 @@ describe '#Vector2d', ->
       vec1 = new Vector2d 2, 8
       scalar = 3
     it 'Возвращается объект который вызывал метод multiplyY', ->
-      vec1New = vec1.mul scalar
+      vec1New = vec1.multiplyY scalar
       assert.instanceOf vec1New, Vector2d, 'Не является экземпляром класса Vector2d'
       assert.strictEqual vec1New, vec1, 'Не является тем же самым объектом'
     it 'Умножение на скаляр', ->
-      vec1.mul scalar
+      vec1.multiplyY scalar
       assert.strictEqual vec1.x, 2, 'Не правильный результат умножения в свойстве X'
       assert.strictEqual vec1.y, 8*3, 'Не правильный результат умножения в свойстве Y'
 
@@ -224,11 +224,11 @@ describe '#Vector2d', ->
       vector2d = new Vector2d 2, 8
       scalar = 3
     it 'Возвращается объект который вызывал метод divide', ->
-      newVector2d = vector2d.div scalar
+      newVector2d = vector2d.divide scalar
       assert.instanceOf newVector2d, Vector2d, 'Не является экземпляром класса Vector2d'
       assert.strictEqual newVector2d, vector2d, 'Не является тем же самым объектом'
     it 'Деление на скаляр', ->
-      vector2d.div scalar
+      vector2d.divide scalar
       assert.strictEqual vector2d.x, 2/3, 'Не правильный результат деления в свойстве X'
       assert.strictEqual vector2d.y, 8/3, 'Не правильный результат деления в свойстве Y'
 
@@ -239,11 +239,11 @@ describe '#Vector2d', ->
       vec1 = new Vector2d 2, 8
       scalar = 3
     it 'Возвращается объект который вызывал метод divideX', ->
-      vec1New = vec1.div scalar
+      vec1New = vec1.divideX scalar
       assert.instanceOf vec1New, Vector2d, 'Не является экземпляром класса Vector2d'
       assert.strictEqual vec1New, vec1, 'Не является тем же самым объектом'
     it 'Деление на скаляр', ->
-      vec1.div scalar
+      vec1.divideX scalar
       assert.strictEqual vec1.x, 2/3, 'Не правильный результат деления в свойстве X'
       assert.strictEqual vec1.y, 8, 'Не правильный результат деления в свойстве Y'
 
@@ -254,11 +254,11 @@ describe '#Vector2d', ->
       vec1 = new Vector2d 2, 8
       scalar = 3
     it 'Возвращается объект который вызывал метод divideY', ->
-      vec1New = vec1.div scalar
+      vec1New = vec1.divideY scalar
       assert.instanceOf vec1New, Vector2d, 'Не является экземпляром класса Vector2d'
       assert.strictEqual vec1New, vec1, 'Не является тем же самым объектом'
     it 'Деление на скаляр', ->
-      vec1.div scalar
+      vec1.divideY scalar
       assert.strictEqual vec1.x, 2, 'Не правильный результат деления в свойстве X'
       assert.strictEqual vec1.y, 8/3, 'Не правильный результат деления в свойстве Y'
 
@@ -269,12 +269,12 @@ describe '#Vector2d', ->
       vec1 = new Vector2d 2, 8
       vec2 = new Vector2d 5, 6
     it 'Возвращается объект который вызывал метод multiplyScalar', ->
-      vec1New = vec1.mulScalar vec2
+      vec1New = vec1.multiplyScalar vec2
       assert.instanceOf vec1New, Vector2d, 'Не является экземпляром класса Vector2d'
       assert.strictEqual vec1New, vec1, 'Не является тем же самым объектом'
     it 'Скалярное умножение векторов', ->
       vec2Clone = do vec2.clone
-      vec1.mulScalar vec2
+      vec1.multiplyScalar vec2
       assert.strictEqual vec1.x, 2*5, 'Не правильный результат умножения в свойстве X'
       assert.strictEqual vec1.y, 8*6, 'Не правильный результат умножения в свойстве Y'
       assert.strictEqual vec2Clone.x, vec2.x, 'Умножение векторов не должно изменять свойство X у входящего вектора'
@@ -287,12 +287,12 @@ describe '#Vector2d', ->
       vec1 = new Vector2d 2, 8
       vec2 = new Vector2d 5, 6
     it 'Возвращается объект который вызывал метод multiplyScalarX', ->
-      vec1New = vec1.mulScalar vec2
+      vec1New = vec1.multiplyScalarX vec2
       assert.instanceOf vec1New, Vector2d, 'Не является экземпляром класса Vector2d'
       assert.strictEqual vec1New, vec1, 'Не является тем же самым объектом'
     it 'Скалярное умножение векторов', ->
       vec2Clone = do vec2.clone
-      vec1.mulScalar vec2
+      vec1.multiplyScalarX vec2
       assert.strictEqual vec1.x, 2*5, 'Не правильный результат умножения в свойстве X'
       assert.strictEqual vec1.y, 8, 'Не правильный результат умножения в свойстве Y'
       assert.strictEqual vec2Clone.x, vec2.x, 'Умножение векторов не должно изменять свойство X у входящего вектора'
@@ -305,12 +305,12 @@ describe '#Vector2d', ->
       vec1 = new Vector2d 2, 8
       vec2 = new Vector2d 5, 6
     it 'Возвращается объект который вызывал метод multiplyScalarY', ->
-      vec1New = vec1.mulScalar vec2
+      vec1New = vec1.multiplyScalarY vec2
       assert.instanceOf vec1New, Vector2d, 'Не является экземпляром класса Vector2d'
       assert.strictEqual vec1New, vec1, 'Не является тем же самым объектом'
     it 'Скалярное умножение векторов', ->
       vec2Clone = do vec2.clone
-      vec1.mulScalar vec2
+      vec1.multiplyScalarY vec2
       assert.strictEqual vec1.x, 2, 'Не правильный результат умножения в свойстве X'
       assert.strictEqual vec1.y, 8*6, 'Не правильный результат умножения в свойстве Y'
       assert.strictEqual vec2Clone.x, vec2.x, 'Умножение векторов не должно изменять свойство X у входящего вектора'

@@ -11,7 +11,25 @@ class Vector2d
   #
   # @return [Vector2d] Возвращает самого себя
   add: (b)->
+    @addX b
+    @addY b
+    @
+
+  # Сложение векторов
+  #
+  # @param [Vector2d] Вектор который прибавляется
+  #
+  # @return [Vector2d] Возвращает самого себя
+  addX: (b)->
     @x += b.x
+    @
+
+  # Сложение векторов
+  #
+  # @param [Vector2d] Вектор который прибавляется
+  #
+  # @return [Vector2d] Возвращает самого себя
+  addY: (b)->
     @y += b.y
     @
 
@@ -20,8 +38,26 @@ class Vector2d
   # @param [Vector2d] Вектор который вычитается
   #
   # @return [Vector2d] Возвращает самого себя
-  sub: (b)->
+  subtract: (b)->
+    @subtractX b
+    @subtractY b
+    @
+
+  # Вычитание векторов
+  #
+  # @param [Vector2d] Вектор который вычитается
+  #
+  # @return [Vector2d] Возвращает самого себя
+  subtractX: (b)->
     @x -= b.x
+    @
+
+  # Вычитание векторов
+  #
+  # @param [Vector2d] Вектор который вычитается
+  #
+  # @return [Vector2d] Возвращает самого себя
+  subtractY: (b)->
     @y -= b.y
     @
 
@@ -30,8 +66,26 @@ class Vector2d
   # @param [Number] Скалярное число на которое нужно умножить
   #
   # @return [Vector2d] Возвращает самого себя
-  mul: (scalar)->
+  multiply: (scalar)->
+    @multiplyX scalar
+    @multiplyY scalar
+    @
+
+  # Умножение вектора на скаляр
+  #
+  # @param [Number] Скалярное число на которое нужно умножить
+  #
+  # @return [Vector2d] Возвращает самого себя
+  multiplyX: (scalar)->
     @x *= scalar
+    @
+
+  # Умножение вектора на скаляр
+  #
+  # @param [Number] Скалярное число на которое нужно умножить
+  #
+  # @return [Vector2d] Возвращает самого себя
+  multiplyY: (scalar)->
     @y *= scalar
     @
 
@@ -40,9 +94,49 @@ class Vector2d
   # @param [Number] Скалярное число на которое нужно поделить
   #
   # @return [Vector2d] Возвращает самого себя
-  div: (scalar)->
+  divide: (scalar)->
+    @divideX scalar
+    @divideY scalar
+    @
+
+  # Деление вектора на скаляр
+  #
+  # @param [Number] Скалярное число на которое нужно поделить
+  #
+  # @return [Vector2d] Возвращает самого себя
+  divideX: (scalar)->
     @x /= scalar
+    @
+
+  # Деление вектора на скаляр
+  #
+  # @param [Number] Скалярное число на которое нужно поделить
+  #
+  # @return [Vector2d] Возвращает самого себя
+  divideY: (scalar)->
     @y /= scalar
+    @
+
+  # Инверсия вектора
+  #
+  # @return [Vector2d] Возвращает самого себя
+  invert: ()->
+    do @invertX
+    do @invertY
+    @
+
+  # Инверсия вектора
+  #
+  # @return [Vector2d] Возвращает самого себя
+  invertX: ()->
+    @x = -@x
+    @
+
+  # Инверсия вектора
+  #
+  # @return [Vector2d] Возвращает самого себя
+  invertY: ()->
+    @y = -@y
     @
 
   # Умножение векторов
@@ -50,8 +144,26 @@ class Vector2d
   # @param [Vector2d] Вектор с которым перемножается
   #
   # @return [Vector2d] Возвращает самого себя
-  mulScalar: (b)->
+  multiplyScalar: (b)->
+    @multiplyScalarX b
+    @multiplyScalarY b
+    @
+
+  # Умножение векторов
+  #
+  # @param [Vector2d] Вектор с которым перемножается
+  #
+  # @return [Vector2d] Возвращает самого себя
+  multiplyScalarX: (b)->
     @x *= b.x
+    @
+
+  # Умножение векторов
+  #
+  # @param [Vector2d] Вектор с которым перемножается
+  #
+  # @return [Vector2d] Возвращает самого себя
+  multiplyScalarY: (b)->
     @y *= b.y
     @
 
@@ -83,6 +195,14 @@ class Vector2d
 
   clone: ->
     new Vector2d @x, @y
+
+  unfloat: ->
+    @x = Math.round(@x)
+    @y = Math.round(@y)
+    @
+
+  isZero: ->
+    @x is 0 and @y is 0
 
   # Поворот вектора
   #

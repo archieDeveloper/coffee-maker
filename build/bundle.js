@@ -409,31 +409,97 @@
 	  }
 
 	  Vector2d.prototype.add = function(b) {
+	    this.addX(b);
+	    this.addY(b);
+	    return this;
+	  };
+
+	  Vector2d.prototype.addX = function(b) {
 	    this.x += b.x;
+	    return this;
+	  };
+
+	  Vector2d.prototype.addY = function(b) {
 	    this.y += b.y;
 	    return this;
 	  };
 
-	  Vector2d.prototype.sub = function(b) {
+	  Vector2d.prototype.subtract = function(b) {
+	    this.substractX(b);
+	    this.substractY(b);
+	    return this;
+	  };
+
+	  Vector2d.prototype.subtractX = function(b) {
 	    this.x -= b.x;
+	    return this;
+	  };
+
+	  Vector2d.prototype.subtractY = function(b) {
 	    this.y -= b.y;
 	    return this;
 	  };
 
-	  Vector2d.prototype.mul = function(scalar) {
+	  Vector2d.prototype.multiply = function(scalar) {
+	    this.multiplyX(scalar);
+	    this.multiplyY(scalar);
+	    return this;
+	  };
+
+	  Vector2d.prototype.multiplyX = function(scalar) {
 	    this.x *= scalar;
+	    return this;
+	  };
+
+	  Vector2d.prototype.multiplyY = function(scalar) {
 	    this.y *= scalar;
 	    return this;
 	  };
 
-	  Vector2d.prototype.div = function(scalar) {
+	  Vector2d.prototype.divide = function(scalar) {
+	    this.divideX(scalar);
+	    this.divideY(scalar);
+	    return this;
+	  };
+
+	  Vector2d.prototype.divideX = function(scalar) {
 	    this.x /= scalar;
+	    return this;
+	  };
+
+	  Vector2d.prototype.divideY = function(scalar) {
 	    this.y /= scalar;
 	    return this;
 	  };
 
-	  Vector2d.prototype.mulScalar = function(b) {
+	  Vector2d.prototype.invert = function() {
+	    this.invertX();
+	    this.invertY();
+	    return this;
+	  };
+
+	  Vector2d.prototype.invertX = function() {
+	    this.x = -this.x;
+	    return this;
+	  };
+
+	  Vector2d.prototype.invertY = function() {
+	    this.y = -this.y;
+	    return this;
+	  };
+
+	  Vector2d.prototype.multiplyScalar = function(b) {
+	    this.mulScalarX(b);
+	    this.mulScalarY(b);
+	    return this;
+	  };
+
+	  Vector2d.prototype.multiplyScalarX = function(b) {
 	    this.x *= b.x;
+	    return this;
+	  };
+
+	  Vector2d.prototype.multiplyScalarY = function(b) {
 	    this.y *= b.y;
 	    return this;
 	  };
@@ -460,6 +526,16 @@
 
 	  Vector2d.prototype.clone = function() {
 	    return new Vector2d(this.x, this.y);
+	  };
+
+	  Vector2d.prototype.unfloat = function() {
+	    this.x = Math.round(this.x);
+	    this.y = Math.round(this.y);
+	    return this;
+	  };
+
+	  Vector2d.prototype.isZero = function() {
+	    return this.x === 0 && this.y === 0;
 	  };
 
 	  Vector2d.prototype.rotate = function() {
