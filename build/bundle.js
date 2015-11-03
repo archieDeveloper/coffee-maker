@@ -425,8 +425,8 @@
 	  };
 
 	  Vector2d.prototype.subtract = function(b) {
-	    this.substractX(b);
-	    this.substractY(b);
+	    this.subtractX(b);
+	    this.subtractY(b);
 	    return this;
 	  };
 
@@ -489,8 +489,8 @@
 	  };
 
 	  Vector2d.prototype.multiplyScalar = function(b) {
-	    this.mulScalarX(b);
-	    this.mulScalarY(b);
+	    this.multiplyScalarX(b);
+	    this.multiplyScalarY(b);
 	    return this;
 	  };
 

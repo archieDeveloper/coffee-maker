@@ -373,3 +373,31 @@ describe '#Vector2d', ->
       assert.strictEqual firstVector2d.y, c * secondVector2d.y, 'Не правильный результат проекции в свойстве Y'
       assert.strictEqual cloneSecondVector2d.x, secondVector2d.x, 'Вычисление проекции не должно изменять свойство X у входящего вектора'
       assert.strictEqual cloneSecondVector2d.y, secondVector2d.y, 'Вычисление проекции не должно изменять свойство Y у входящего вектора'
+
+  describe '#unfloat', ->
+    vec1 = undefined
+    beforeEach ->
+      vec1 = new Vector2d 2.234, 4.45
+    it 'Возвращается объект который вызывал метод unfloat', ->
+      vec1New = do vec1.unfloat
+      assert.instanceOf vec1New, Vector2d, 'Не является экземпляром класса Vector2d'
+      assert.strictEqual vec1New, vec1, 'Не является тем же самым объектом'
+    it 'Округляет вектор', ->
+      do vec1.unfloat
+      assert.strictEqual vec1.x, Math.round(vec1.x), 'Не правильный результат округления в свойстве X'
+      assert.strictEqual vec1.y, Math.round(vec1.y), 'Не правильный результат округления в свойстве Y'
+
+  describe '#isZero', ->
+    vec1 = undefined
+    vec2 = undefined
+    beforeEach ->
+      vec1 = new Vector2d 2, 4
+      vec2 = new Vector2d
+    it 'Возвращается объект который вызывал метод isZero', ->
+      res = do vec1.isZero
+      assert.typeOf res, 'boolean', 'Не является boolean'
+    it 'Проверка на нулевой вектор', ->
+      res1 = do vec1.isZero
+      res2 = do vec2.isZero
+      assert.strictEqual res1, false, 'Этот вектор не нулейвой'
+      assert.strictEqual res2, true, 'Этот вектор нулевой'
