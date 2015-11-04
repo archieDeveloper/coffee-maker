@@ -440,34 +440,50 @@
 	    return this;
 	  };
 
-	  Vector2d.prototype.multiply = function(scalar) {
-	    this.multiplyX(scalar);
-	    this.multiplyY(scalar);
+	  Vector2d.prototype.multiply = function(b) {
+	    this.multiplyX(b);
+	    this.multiplyY(b);
 	    return this;
 	  };
 
-	  Vector2d.prototype.multiplyX = function(scalar) {
+	  Vector2d.prototype.multiplyX = function(b) {
+	    this.x *= b.x;
+	    return this;
+	  };
+
+	  Vector2d.prototype.multiplyY = function(b) {
+	    this.y *= b.y;
+	    return this;
+	  };
+
+	  Vector2d.prototype.multiplyScalar = function(scalar) {
+	    this.multiplyScalarX(scalar);
+	    this.multiplyScalarY(scalar);
+	    return this;
+	  };
+
+	  Vector2d.prototype.multiplyScalarX = function(scalar) {
 	    this.x *= scalar;
 	    return this;
 	  };
 
-	  Vector2d.prototype.multiplyY = function(scalar) {
+	  Vector2d.prototype.multiplyScalarY = function(scalar) {
 	    this.y *= scalar;
 	    return this;
 	  };
 
-	  Vector2d.prototype.divide = function(scalar) {
-	    this.divideX(scalar);
-	    this.divideY(scalar);
+	  Vector2d.prototype.divideScalar = function(scalar) {
+	    this.divideScalarX(scalar);
+	    this.divideScalarY(scalar);
 	    return this;
 	  };
 
-	  Vector2d.prototype.divideX = function(scalar) {
+	  Vector2d.prototype.divideScalarX = function(scalar) {
 	    this.x /= scalar;
 	    return this;
 	  };
 
-	  Vector2d.prototype.divideY = function(scalar) {
+	  Vector2d.prototype.divideScalarY = function(scalar) {
 	    this.y /= scalar;
 	    return this;
 	  };
@@ -488,24 +504,12 @@
 	    return this;
 	  };
 
-	  Vector2d.prototype.multiplyScalar = function(b) {
-	    this.multiplyScalarX(b);
-	    this.multiplyScalarY(b);
-	    return this;
-	  };
-
-	  Vector2d.prototype.multiplyScalarX = function(b) {
-	    this.x *= b.x;
-	    return this;
-	  };
-
-	  Vector2d.prototype.multiplyScalarY = function(b) {
-	    this.y *= b.y;
-	    return this;
-	  };
-
 	  Vector2d.prototype.length = function() {
-	    return Math.sqrt(this.x * this.x + this.y * this.y);
+	    return Math.sqrt(this.lengthSquared());
+	  };
+
+	  Vector2d.prototype.lengthSquared = function() {
+	    return this.x * this.x + this.y * this.y;
 	  };
 
 	  Vector2d.prototype.normalize = function() {
@@ -516,7 +520,7 @@
 	    return this;
 	  };
 
-	  Vector2d.prototype.projection = function(b) {
+	  Vector2d.prototype.project = function(b) {
 	    var c;
 	    c = ((this.x * b.x) + (this.y * b.y)) / ((b.x * b.x) + (b.y * b.y));
 	    this.x = b.x * c;
@@ -528,7 +532,7 @@
 	    return new Vector2d(this.x, this.y);
 	  };
 
-	  Vector2d.prototype.unfloat = function() {
+	  Vector2d.prototype.round = function() {
 	    this.x = Math.round(this.x);
 	    this.y = Math.round(this.y);
 	    return this;
