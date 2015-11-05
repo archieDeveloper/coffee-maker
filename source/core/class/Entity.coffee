@@ -7,7 +7,6 @@ class Entity
     rotate: new Vector2d 1, 0
     scale: new Vector2d 1, 1
 
-  constructor: ->
   create: ->
 
   step: ->

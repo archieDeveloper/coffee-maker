@@ -66,7 +66,7 @@
 
 	console.log(currentScene);
 
-	requestAnimationFrame = __webpack_require__(9);
+	requestAnimationFrame = __webpack_require__(13);
 
 	lastTime = Date.now();
 
@@ -584,7 +584,7 @@
 
 	Vector2d = __webpack_require__(6);
 
-	Player = __webpack_require__(10);
+	Player = __webpack_require__(9);
 
 	Main = (function(superClass) {
 	  extend(Main, superClass);
@@ -622,22 +622,13 @@
 
 /***/ },
 /* 9 */
-/***/ function(module, exports) {
-
-	module.exports = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
-	  window.setTimeout(callback, 1000 / 60);
-	};
-
-
-/***/ },
-/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Entity, Input, Player, Vector2d, input,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
-	Entity = __webpack_require__(11);
+	Entity = __webpack_require__(10);
 
 	Input = __webpack_require__(2);
 
@@ -649,7 +640,7 @@
 	  extend(Player, superClass);
 
 	  function Player() {
-	    this.playerSprite = __webpack_require__(12);
+	    this.playerSprite = __webpack_require__(11);
 	    this.speed = new Vector2d;
 	    this.force = new Vector2d;
 	    this.friction = 0.9;
@@ -685,7 +676,7 @@
 
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Entity, Vector2d;
@@ -693,13 +684,13 @@
 	Vector2d = __webpack_require__(6);
 
 	Entity = (function() {
+	  function Entity() {}
+
 	  Entity.prototype.transform = {
 	    position: new Vector2d,
 	    rotate: new Vector2d(1, 0),
 	    scale: new Vector2d(1, 1)
 	  };
-
-	  function Entity() {}
 
 	  Entity.prototype.create = function() {};
 
@@ -715,12 +706,12 @@
 
 
 /***/ },
-/* 12 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Sprite, Vector2d, playerSprite;
 
-	Sprite = __webpack_require__(13);
+	Sprite = __webpack_require__(12);
 
 	Vector2d = __webpack_require__(6);
 
@@ -736,7 +727,7 @@
 
 
 /***/ },
-/* 13 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Resource, Sprite, Vector2d, canvas, context, resource;
@@ -800,6 +791,15 @@
 	})();
 
 	module.exports = Sprite;
+
+
+/***/ },
+/* 13 */
+/***/ function(module, exports) {
+
+	module.exports = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
+	  window.setTimeout(callback, 1000 / 60);
+	};
 
 
 /***/ }

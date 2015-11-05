@@ -17,7 +17,7 @@ class Sprite
 
   constructor: (options)->
     {
-      @width = 0
+      @width  = 0
       @height = 0
       @origin = new Vector2d
       @image
@@ -29,22 +29,16 @@ class Sprite
     if not (@origin instanceof Vector2d)
       throw new Error 'No valid type'
 
-  # Установить центр спрайта на середину изображения
   setOriginCenter: ->
     do @setOriginHorizontalCenter
     do @setOriginVerticalCenter
 
-  # Установить центр спрайта на середину изображения по вертикали
   setOriginVerticalCenter: ->
     @origin.y = @height/2
 
-  # Установить центр спрайта на середину изображения по горизонтали
   setOriginHorizontalCenter: ->
     @origin.x = @width/2
 
-  # Отрисовать спрайт
-  #
-  # @param [Vector2d] position Позиция для отрисовки
   draw: (position) ->
     if not (position instanceof Vector2d)
       new Error 'No valid type'
