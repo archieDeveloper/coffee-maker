@@ -44,7 +44,7 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Input, Resource, Vector2d, canvas, context, draw, gameLoop, init, input, lastTime, loadImage, requestAnimationFrame, requireSprites, resource, sprites, step;
+	var Input, MainScene, Resource, Vector2d, canvas, context, currentScene, draw, gameLoop, init, input, lastTime, loadImage, requestAnimationFrame, resource, step;
 
 	Resource = __webpack_require__(1);
 
@@ -60,18 +60,37 @@
 
 	resource = Resource.getInstance();
 
-	requireSprites = __webpack_require__(7);
+	MainScene = __webpack_require__(7);
 
-	sprites = requireSprites.keys().map(requireSprites);
+	currentScene = new MainScene;
 
-	requestAnimationFrame = __webpack_require__(10);
+	console.log(currentScene);
+
+	requestAnimationFrame = __webpack_require__(9);
 
 	lastTime = Date.now();
 
-	step = function() {};
+	step = function() {
+	  var name, object, ref, results;
+	  ref = currentScene['object'];
+	  results = [];
+	  for (name in ref) {
+	    object = ref[name];
+	    results.push(object['step']());
+	  }
+	  return results;
+	};
 
 	draw = function() {
-	  return context.clearRect(0, 0, canvas.width, canvas.height);
+	  var name, object, ref, results;
+	  context.clearRect(0, 0, canvas.width, canvas.height);
+	  ref = currentScene['object'];
+	  results = [];
+	  for (name in ref) {
+	    object = ref[name];
+	    results.push(object['draw']());
+	  }
+	  return results;
 	};
 
 	gameLoop = function() {
@@ -557,30 +576,151 @@
 /* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var map = {
-		"./player.coffee": 8
-	};
-	function webpackContext(req) {
-		return __webpack_require__(webpackContextResolve(req));
-	};
-	function webpackContextResolve(req) {
-		return map[req] || (function() { throw new Error("Cannot find module '" + req + "'.") }());
-	};
-	webpackContext.keys = function webpackContextKeys() {
-		return Object.keys(map);
-	};
-	webpackContext.resolve = webpackContextResolve;
-	module.exports = webpackContext;
-	webpackContext.id = 7;
+	var Main, Player, Scene, Vector2d,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	Scene = __webpack_require__(8);
+
+	Vector2d = __webpack_require__(6);
+
+	Player = __webpack_require__(10);
+
+	Main = (function(superClass) {
+	  extend(Main, superClass);
+
+	  Main.prototype.object = {
+	    player: new Player
+	  };
+
+	  function Main() {}
+
+	  return Main;
+
+	})(Scene);
+
+	module.exports = Main;
 
 
 /***/ },
 /* 8 */
+/***/ function(module, exports) {
+
+	var Scene;
+
+	Scene = (function() {
+	  function Scene() {}
+
+	  Scene.prototype.object = {};
+
+	  return Scene;
+
+	})();
+
+	module.exports = Scene;
+
+
+/***/ },
+/* 9 */
+/***/ function(module, exports) {
+
+	module.exports = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
+	  window.setTimeout(callback, 1000 / 60);
+	};
+
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Entity, Input, Player, Vector2d, input,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	Entity = __webpack_require__(11);
+
+	Input = __webpack_require__(2);
+
+	Vector2d = __webpack_require__(6);
+
+	input = Input.getInstance();
+
+	Player = (function(superClass) {
+	  extend(Player, superClass);
+
+	  function Player() {
+	    this.playerSprite = __webpack_require__(12);
+	    this.speed = new Vector2d;
+	    this.force = new Vector2d;
+	    this.friction = 0.9;
+	    this.transform.position = new Vector2d(100, 200);
+	    this.transform.rotate = 0;
+	  }
+
+	  Player.prototype.step = function() {
+	    this.speed.multiplyScalar(this.friction);
+	    this.transform.position.add(this.speed);
+	    this.force.x = Math.cos(this.transform.rotate / 180 * Math.PI) * 1;
+	    this.force.y = Math.sin(this.transform.rotate / 180 * Math.PI) * 1;
+	    if (input.keyboard.isPressed(87)) {
+	      this.speed.add(this.force);
+	    }
+	    if (input.keyboard.isPressed(65)) {
+	      this.transform.rotate -= 1. * this.speed.length();
+	    }
+	    if (input.keyboard.isPressed(68)) {
+	      return this.transform.rotate += 1. * this.speed.length();
+	    }
+	  };
+
+	  Player.prototype.draw = function() {
+	    return this.playerSprite.drawExtend(this.transform.position, this.transform.scale, this.transform.rotate);
+	  };
+
+	  return Player;
+
+	})(Entity);
+
+	module.exports = Player;
+
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Entity, Vector2d;
+
+	Vector2d = __webpack_require__(6);
+
+	Entity = (function() {
+	  Entity.prototype.transform = {
+	    position: new Vector2d,
+	    rotate: new Vector2d(1, 0),
+	    scale: new Vector2d(1, 1)
+	  };
+
+	  function Entity() {}
+
+	  Entity.prototype.create = function() {};
+
+	  Entity.prototype.step = function() {};
+
+	  Entity.prototype.draw = function() {};
+
+	  return Entity;
+
+	})();
+
+	module.exports = Entity;
+
+
+/***/ },
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Sprite, Vector2d, playerSprite;
 
-	Sprite = __webpack_require__(9);
+	Sprite = __webpack_require__(13);
 
 	Vector2d = __webpack_require__(6);
 
@@ -596,7 +736,7 @@
 
 
 /***/ },
-/* 9 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Resource, Sprite, Vector2d, canvas, context, resource;
@@ -618,7 +758,7 @@
 	    if (this.image == null) {
 	      throw new Error('No image');
 	    } else {
-	      this.image = resource.load('/coffeeMaker/source/game/resource/images/' + this.image);
+	      this.image = resource.load('../source/game/resource/images/' + this.image);
 	    }
 	    if (!(this.origin instanceof Vector2d)) {
 	      throw new Error('No valid type');
@@ -647,20 +787,19 @@
 	    return context.restore();
 	  };
 
+	  Sprite.prototype.drawExtend = function(position, scale, rotate) {
+	    context.save();
+	    context.translate(position.x, position.y);
+	    context.rotate(rotate * Math.PI / 180);
+	    context.drawImage(resource.get(this.image), 0, 0, this.width, this.height, -this.origin.x * scale.x, -this.origin.y * scale.y, this.width * scale.x, this.height * scale.y);
+	    return context.restore();
+	  };
+
 	  return Sprite;
 
 	})();
 
 	module.exports = Sprite;
-
-
-/***/ },
-/* 10 */
-/***/ function(module, exports) {
-
-	module.exports = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
-	  window.setTimeout(callback, 1000 / 60);
-	};
 
 
 /***/ }

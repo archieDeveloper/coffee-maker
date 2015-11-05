@@ -25,7 +25,7 @@ class Sprite
     if not @image?
       throw new Error 'No image'
     else
-      @image = resource.load('/coffeeMaker/source/game/resource/images/'+@image)
+      @image = resource.load('../source/game/resource/images/'+@image)
     if not (@origin instanceof Vector2d)
       throw new Error 'No valid type'
 
@@ -55,6 +55,23 @@ class Sprite
       position.y-@origin.y
       @width
       @height
+    )
+    do context.restore
+
+  drawExtend: (position,scale,rotate)->
+    do context.save
+    context.translate position.x, position.y
+    context.rotate rotate*Math.PI/180
+    context.drawImage(
+      resource.get(@image),
+      0,
+      0,
+      @width,
+      @height,
+      -@origin.x*scale.x,
+      -@origin.y*scale.y,
+      @width*scale.x,
+      @height*scale.y
     )
     do context.restore
 

@@ -7,17 +7,27 @@ context = canvas.getContext "2d"
 input = Input.getInstance()
 resource = Resource.getInstance()
 
-requireSprites = require.context 'game/sprite', true, /^\.\/.*\.(coffee|js)$/
-sprites = requireSprites.keys().map requireSprites
+# requireSprites = require.context 'game/sprite', true, /^\.\/.*\.(coffee|js)$/
+# sprites = requireSprites.keys().map requireSprites
+
+MainScene = require 'game/scene/main'
+currentScene = new MainScene
+# requireScenes = require.context 'game/scene', true, /^\.\/.*\.(coffee|js)$/
+# scenes = requireScenes.keys().map requireScenes
+
+console.log currentScene
 
 requestAnimationFrame = require 'core/module/requestAnimationFrame'
 
 lastTime = do Date.now
 
 step = ->
-
+  for name, object of currentScene['object']
+    do object['step']
 draw = ->
   context.clearRect 0, 0, canvas.width, canvas.height
+  for name, object of currentScene['object']
+    do object['draw']
 
 gameLoop = ->
   now = do Date.now
