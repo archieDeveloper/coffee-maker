@@ -22,6 +22,8 @@ class Player extends Entity
     @rudderAngle = 0
     @rudderScale = new Vector2d 0.25, 0.25
 
+    @directionWheel = 0
+
     @wheel1 = new Vector2d
     @wheel2 = new Vector2d
     @wheel3 = new Vector2d
@@ -31,11 +33,16 @@ class Player extends Entity
     @speed.multiplyScalar @friction
     @transform.position.add @speed
 
-    @force.x = Math.cos(@transform.rotate/180*Math.PI)*1;
-    @force.y = Math.sin(@transform.rotate/180*Math.PI)*1;
+    @directionWheel = @rudderAngle+@transform.rotate
+
+    @force.x = Math.cos(((@directionWheel))/180*Math.PI)*1;
+    @force.y = Math.sin(((@directionWheel))/180*Math.PI)*1;
+
 
     if input.keyboard.isPressed(87)
       @speed.add @force
+
+      @transform.rotate = @force.rotate()
 
     if input.keyboard.isPressed(65)
       @rudderAngle -= 10
@@ -51,7 +58,7 @@ class Player extends Entity
     @rudderSprite.drawExtend @rudderPosition, @rudderScale, @rudderAngle
     @playerSprite.drawExtend @transform.position, @transform.scale, @transform.rotate
 
-    @playerSprite.drawVector2d @transform.position, @speed
+    @playerSprite.drawVector2d @transform.position, @force.clone().multiplyScalar(100)
 
     wheelLengthdirX = lengthdirX(22, @transform.rotate)
     wheelLengthdirY = lengthdirY(22, @transform.rotate)
@@ -78,14 +85,14 @@ class Player extends Entity
     @wheelSprite.drawExtend(
       @wheel3
       @transform.scale
-      @transform.rotate+@rudderAngle
+      @directionWheel
     )
     @wheel4.x = @transform.position.x+wheelLengthdirX+wheelLengthdirX2
     @wheel4.y = @transform.position.y+wheelLengthdirY+wheelLengthdirY2
     @wheelSprite.drawExtend(
       @wheel4
       @transform.scale
-      @transform.rotate+@rudderAngle
+      @directionWheel
     )
 
   lengthdirX = (len, dir)->

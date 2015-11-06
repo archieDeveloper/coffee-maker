@@ -653,6 +653,7 @@
 	    this.rudderPosition = new Vector2d(60, 60);
 	    this.rudderAngle = 0;
 	    this.rudderScale = new Vector2d(0.25, 0.25);
+	    this.directionWheel = 0;
 	    this.wheel1 = new Vector2d;
 	    this.wheel2 = new Vector2d;
 	    this.wheel3 = new Vector2d;
@@ -662,10 +663,12 @@
 	  Player.prototype.step = function() {
 	    this.speed.multiplyScalar(this.friction);
 	    this.transform.position.add(this.speed);
-	    this.force.x = Math.cos(this.transform.rotate / 180 * Math.PI) * 1;
-	    this.force.y = Math.sin(this.transform.rotate / 180 * Math.PI) * 1;
+	    this.directionWheel = this.rudderAngle + this.transform.rotate;
+	    this.force.x = Math.cos(this.directionWheel / 180 * Math.PI) * 1;
+	    this.force.y = Math.sin(this.directionWheel / 180 * Math.PI) * 1;
 	    if (input.keyboard.isPressed(87)) {
 	      this.speed.add(this.force);
+	      this.transform.rotate = this.force.rotate();
 	    }
 	    if (input.keyboard.isPressed(65)) {
 	      this.rudderAngle -= 10;
@@ -685,7 +688,7 @@
 	    var wheelLengthdirX, wheelLengthdirX2, wheelLengthdirY, wheelLengthdirY2;
 	    this.rudderSprite.drawExtend(this.rudderPosition, this.rudderScale, this.rudderAngle);
 	    this.playerSprite.drawExtend(this.transform.position, this.transform.scale, this.transform.rotate);
-	    this.playerSprite.drawVector2d(this.transform.position, this.speed);
+	    this.playerSprite.drawVector2d(this.transform.position, this.force.clone().multiplyScalar(100));
 	    wheelLengthdirX = lengthdirX(22, this.transform.rotate);
 	    wheelLengthdirY = lengthdirY(22, this.transform.rotate);
 	    wheelLengthdirX2 = lengthdirX(10, this.transform.rotate + 90);
@@ -698,10 +701,10 @@
 	    this.wheelSprite.drawExtend(this.wheel2, this.transform.scale, this.transform.rotate);
 	    this.wheel3.x = this.transform.position.x + wheelLengthdirX - wheelLengthdirX2;
 	    this.wheel3.y = this.transform.position.y + wheelLengthdirY - wheelLengthdirY2;
-	    this.wheelSprite.drawExtend(this.wheel3, this.transform.scale, this.transform.rotate + this.rudderAngle);
+	    this.wheelSprite.drawExtend(this.wheel3, this.transform.scale, this.directionWheel);
 	    this.wheel4.x = this.transform.position.x + wheelLengthdirX + wheelLengthdirX2;
 	    this.wheel4.y = this.transform.position.y + wheelLengthdirY + wheelLengthdirY2;
-	    return this.wheelSprite.drawExtend(this.wheel4, this.transform.scale, this.transform.rotate + this.rudderAngle);
+	    return this.wheelSprite.drawExtend(this.wheel4, this.transform.scale, this.directionWheel);
 	  };
 
 	  lengthdirX = function(len, dir) {
