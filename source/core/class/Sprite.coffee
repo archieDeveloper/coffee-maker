@@ -69,4 +69,13 @@ class Sprite
     )
     do context.restore
 
+  drawVector2d: (position, vec)->
+    do context.save
+    do context.beginPath
+    context.moveTo(position.x, position.y)
+    context.lineTo(position.x+vec.x, position.y+vec.y)
+    context.strokeStyle = "#000"
+    do context.stroke
+    do context.restore
+
 module.exports = Sprite

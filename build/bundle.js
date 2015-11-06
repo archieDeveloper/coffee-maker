@@ -66,7 +66,7 @@
 
 	console.log(currentScene);
 
-	requestAnimationFrame = __webpack_require__(13);
+	requestAnimationFrame = __webpack_require__(14);
 
 	lastTime = Date.now();
 
@@ -637,15 +637,26 @@
 	input = Input.getInstance();
 
 	Player = (function(superClass) {
+	  var lengthdirX, lengthdirY;
+
 	  extend(Player, superClass);
 
 	  function Player() {
 	    this.playerSprite = __webpack_require__(11);
+	    this.rudderSprite = __webpack_require__(13);
+	    this.wheelSprite = __webpack_require__(15);
 	    this.speed = new Vector2d;
 	    this.force = new Vector2d;
 	    this.friction = 0.9;
 	    this.transform.position = new Vector2d(100, 200);
 	    this.transform.rotate = 0;
+	    this.rudderPosition = new Vector2d(60, 60);
+	    this.rudderAngle = 0;
+	    this.rudderScale = new Vector2d(0.25, 0.25);
+	    this.wheel1 = new Vector2d;
+	    this.wheel2 = new Vector2d;
+	    this.wheel3 = new Vector2d;
+	    this.wheel4 = new Vector2d;
 	  }
 
 	  Player.prototype.step = function() {
@@ -657,15 +668,48 @@
 	      this.speed.add(this.force);
 	    }
 	    if (input.keyboard.isPressed(65)) {
-	      this.transform.rotate -= 1. * this.speed.length();
+	      this.rudderAngle -= 10;
 	    }
 	    if (input.keyboard.isPressed(68)) {
-	      return this.transform.rotate += 1. * this.speed.length();
+	      this.rudderAngle += 10;
+	    }
+	    if (this.rudderAngle >= 360 * 1.5) {
+	      this.rudderAngle = 360 * 1.5;
+	    }
+	    if (this.rudderAngle <= -360 * 1.5) {
+	      return this.rudderAngle = -360 * 1.5;
 	    }
 	  };
 
 	  Player.prototype.draw = function() {
-	    return this.playerSprite.drawExtend(this.transform.position, this.transform.scale, this.transform.rotate);
+	    var wheelLengthdirX, wheelLengthdirX2, wheelLengthdirY, wheelLengthdirY2;
+	    this.rudderSprite.drawExtend(this.rudderPosition, this.rudderScale, this.rudderAngle);
+	    this.playerSprite.drawExtend(this.transform.position, this.transform.scale, this.transform.rotate);
+	    this.playerSprite.drawVector2d(this.transform.position, this.speed);
+	    wheelLengthdirX = lengthdirX(22, this.transform.rotate);
+	    wheelLengthdirY = lengthdirY(22, this.transform.rotate);
+	    wheelLengthdirX2 = lengthdirX(10, this.transform.rotate + 90);
+	    wheelLengthdirY2 = lengthdirY(10, this.transform.rotate + 90);
+	    this.wheel1.x = this.transform.position.x - wheelLengthdirX - wheelLengthdirX2;
+	    this.wheel1.y = this.transform.position.y - wheelLengthdirY - wheelLengthdirY2;
+	    this.wheelSprite.drawExtend(this.wheel1, this.transform.scale, this.transform.rotate);
+	    this.wheel2.x = this.transform.position.x - wheelLengthdirX + wheelLengthdirX2;
+	    this.wheel2.y = this.transform.position.y - wheelLengthdirY + wheelLengthdirY2;
+	    this.wheelSprite.drawExtend(this.wheel2, this.transform.scale, this.transform.rotate);
+	    this.wheel3.x = this.transform.position.x + wheelLengthdirX - wheelLengthdirX2;
+	    this.wheel3.y = this.transform.position.y + wheelLengthdirY - wheelLengthdirY2;
+	    this.wheelSprite.drawExtend(this.wheel3, this.transform.scale, this.transform.rotate + this.rudderAngle);
+	    this.wheel4.x = this.transform.position.x + wheelLengthdirX + wheelLengthdirX2;
+	    this.wheel4.y = this.transform.position.y + wheelLengthdirY + wheelLengthdirY2;
+	    return this.wheelSprite.drawExtend(this.wheel4, this.transform.scale, this.transform.rotate + this.rudderAngle);
+	  };
+
+	  lengthdirX = function(len, dir) {
+	    return Math.cos(dir * Math.PI / 180) * len;
+	  };
+
+	  lengthdirY = function(len, dir) {
+	    return Math.sin(dir * Math.PI / 180) * len;
 	  };
 
 	  return Player;
@@ -786,6 +830,16 @@
 	    return context.restore();
 	  };
 
+	  Sprite.prototype.drawVector2d = function(position, vec) {
+	    context.save();
+	    context.beginPath();
+	    context.moveTo(position.x, position.y);
+	    context.lineTo(position.x + vec.x, position.y + vec.y);
+	    context.strokeStyle = "#000";
+	    context.stroke();
+	    return context.restore();
+	  };
+
 	  return Sprite;
 
 	})();
@@ -795,11 +849,53 @@
 
 /***/ },
 /* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Sprite, Vector2d, rudderSprite;
+
+	Sprite = __webpack_require__(12);
+
+	Vector2d = __webpack_require__(6);
+
+	rudderSprite = new Sprite({
+	  width: 400,
+	  height: 400,
+	  image: 'rudder.png'
+	});
+
+	rudderSprite.setOriginCenter();
+
+	module.exports = rudderSprite;
+
+
+/***/ },
+/* 14 */
 /***/ function(module, exports) {
 
 	module.exports = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
 	  window.setTimeout(callback, 1000 / 60);
 	};
+
+
+/***/ },
+/* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Sprite, Vector2d, wheelSprite;
+
+	Sprite = __webpack_require__(12);
+
+	Vector2d = __webpack_require__(6);
+
+	wheelSprite = new Sprite({
+	  width: 15,
+	  height: 8,
+	  image: 'wheel.png'
+	});
+
+	wheelSprite.setOriginCenter();
+
+	module.exports = wheelSprite;
 
 
 /***/ }
