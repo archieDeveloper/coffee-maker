@@ -66,7 +66,7 @@
 
 	console.log(currentScene);
 
-	requestAnimationFrame = __webpack_require__(14);
+	requestAnimationFrame = __webpack_require__(15);
 
 	lastTime = Date.now();
 
@@ -624,11 +624,11 @@
 /* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Entity, Input, Player, Vector2d, input,
+	var Actor, Input, Player, Vector2d, input,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
-	Entity = __webpack_require__(10);
+	Actor = __webpack_require__(16);
 
 	Input = __webpack_require__(2);
 
@@ -644,7 +644,7 @@
 	  function Player() {
 	    this.playerSprite = __webpack_require__(11);
 	    this.rudderSprite = __webpack_require__(13);
-	    this.wheelSprite = __webpack_require__(15);
+	    this.wheelSprite = __webpack_require__(14);
 	    this.speed = new Vector2d;
 	    this.force = new Vector2d;
 	    this.friction = 0.9;
@@ -661,11 +661,13 @@
 	  }
 
 	  Player.prototype.step = function() {
+	    var directionWheelAngle;
 	    this.speed.multiplyScalar(this.friction);
 	    this.transform.position.add(this.speed);
 	    this.directionWheel = this.rudderAngle + this.transform.rotate;
-	    this.force.x = Math.cos(this.directionWheel / 180 * Math.PI) * 1;
-	    this.force.y = Math.sin(this.directionWheel / 180 * Math.PI) * 1;
+	    directionWheelAngle = this.directionWheel / 180 * Math.PI;
+	    this.force.x = Math.cos(directionWheelAngle);
+	    this.force.y = Math.sin(directionWheelAngle);
 	    if (input.keyboard.isPressed(87)) {
 	      this.speed.add(this.force);
 	      this.transform.rotate = this.force.rotate();
@@ -717,7 +719,7 @@
 
 	  return Player;
 
-	})(Entity);
+	})(Actor);
 
 	module.exports = Player;
 
@@ -732,12 +734,6 @@
 
 	Entity = (function() {
 	  function Entity() {}
-
-	  Entity.prototype.transform = {
-	    position: new Vector2d,
-	    rotate: new Vector2d(1, 0),
-	    scale: new Vector2d(1, 1)
-	  };
 
 	  Entity.prototype.create = function() {};
 
@@ -873,15 +869,6 @@
 
 /***/ },
 /* 14 */
-/***/ function(module, exports) {
-
-	module.exports = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
-	  window.setTimeout(callback, 1000 / 60);
-	};
-
-
-/***/ },
-/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Sprite, Vector2d, wheelSprite;
@@ -899,6 +886,39 @@
 	wheelSprite.setOriginCenter();
 
 	module.exports = wheelSprite;
+
+
+/***/ },
+/* 15 */
+/***/ function(module, exports) {
+
+	module.exports = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
+	  window.setTimeout(callback, 1000 / 60);
+	};
+
+
+/***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Actor, Entity,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	Entity = __webpack_require__(10);
+
+	Actor = (function(superClass) {
+	  extend(Actor, superClass);
+
+	  function Actor() {
+	    return Actor.__super__.constructor.apply(this, arguments);
+	  }
+
+	  return Actor;
+
+	})(Entity);
+
+	module.exports = Actor;
 
 
 /***/ }

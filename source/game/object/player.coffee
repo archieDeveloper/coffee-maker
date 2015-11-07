@@ -1,10 +1,10 @@
-Entity = require 'core/class/Entity'
+Actor = require 'core/class/Actor'
 Input = require 'core/class/Input'
 Vector2d = require 'core/class/Vector2d'
 
 input = Input.getInstance();
 
-class Player extends Entity
+class Player extends Actor
 
   constructor: ->
     @playerSprite = require 'game/sprite/player'
@@ -35,9 +35,9 @@ class Player extends Entity
 
     @directionWheel = @rudderAngle+@transform.rotate
 
-    @force.x = Math.cos(((@directionWheel))/180*Math.PI)*1;
-    @force.y = Math.sin(((@directionWheel))/180*Math.PI)*1;
-
+    directionWheelAngle = @directionWheel/180*Math.PI
+    @force.x = Math.cos(directionWheelAngle);
+    @force.y = Math.sin(directionWheelAngle);
 
     if input.keyboard.isPressed(87)
       @speed.add @force

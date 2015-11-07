@@ -9,8 +9,8 @@
   "author": "Arkadij Kozhedub <arkadij.ok@gmail.com>",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "nconf": "~0.8.0",
-    "debug": "~2.2.0"
+    "debug": "~2.2.0",
+    "nconf": "~0.8.0"
   },
   "devDependencies": {
     "coffee-script": "~1.10.0",
