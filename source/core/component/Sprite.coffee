@@ -1,9 +1,10 @@
-Vector2d = require 'core/class/Vector2d'
-Resource = require 'core/class/Resource'
-canvas  = require 'core/module/canvas'
-context = canvas.getContext('2d')
+Component = require 'core/class/Component'
+Vector2d  = require 'core/class/Vector2d'
+Resource  = require 'core/class/Resource'
+canvas    = require 'core/module/canvas'
+context   = canvas.getContext('2d')
 
-resource = Resource.getInstance()
+resource  = Resource.getInstance()
 
 # Класс спрайта
 #
@@ -13,7 +14,7 @@ resource = Resource.getInstance()
 # @option options [Vector2d] origin Ценр спрайта
 # @option options [String] image Имя файла изображения
 #
-class Sprite
+class Sprite extends Component
 
   constructor: (options)->
     {

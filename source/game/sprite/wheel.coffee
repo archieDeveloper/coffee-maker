@@ -1,4 +1,4 @@
-Sprite = require 'core/class/Sprite'
+Sprite = require 'core/component/Sprite'
 Vector2d = require 'core/class/Vector2d'
 
 wheelSprite = new Sprite

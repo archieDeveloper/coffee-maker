@@ -754,7 +754,7 @@
 
 	var Sprite, Vector2d, playerSprite;
 
-	Sprite = __webpack_require__(12);
+	Sprite = __webpack_require__(19);
 
 	Vector2d = __webpack_require__(6);
 
@@ -770,10 +770,155 @@
 
 
 /***/ },
-/* 12 */
+/* 12 */,
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Resource, Sprite, Vector2d, canvas, context, resource;
+	var Sprite, Vector2d, rudderSprite;
+
+	Sprite = __webpack_require__(19);
+
+	Vector2d = __webpack_require__(6);
+
+	rudderSprite = new Sprite({
+	  width: 400,
+	  height: 400,
+	  image: 'rudder.png'
+	});
+
+	rudderSprite.setOriginCenter();
+
+	module.exports = rudderSprite;
+
+
+/***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Sprite, Vector2d, wheelSprite;
+
+	Sprite = __webpack_require__(19);
+
+	Vector2d = __webpack_require__(6);
+
+	wheelSprite = new Sprite({
+	  width: 15,
+	  height: 8,
+	  image: 'wheel.png'
+	});
+
+	wheelSprite.setOriginCenter();
+
+	module.exports = wheelSprite;
+
+
+/***/ },
+/* 15 */
+/***/ function(module, exports) {
+
+	module.exports = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
+	  window.setTimeout(callback, 1000 / 60);
+	};
+
+
+/***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Actor, Entity, Transform,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	Entity = __webpack_require__(10);
+
+	Transform = __webpack_require__(17);
+
+	Actor = (function(superClass) {
+	  extend(Actor, superClass);
+
+	  function Actor() {
+	    return Actor.__super__.constructor.apply(this, arguments);
+	  }
+
+	  Actor.prototype.parent = null;
+
+	  Actor.prototype.children = null;
+
+	  return Actor;
+
+	})(Entity);
+
+	module.exports = Actor;
+
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Component, Transform, Vector2d,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	Component = __webpack_require__(18);
+
+	Vector2d = __webpack_require__(6);
+
+	Transform = (function(superClass) {
+	  extend(Transform, superClass);
+
+	  function Transform(options) {
+	    var isVector2d, ref, ref1, ref2;
+	    this.position = (ref = options.position) != null ? ref : new Vector2d(0, 0), this.rotate = (ref1 = options.rotate) != null ? ref1 : new Vector2d(1, 0), this.scale = (ref2 = options.scale) != null ? ref2 : new Vector2d(1, 1);
+	    isVector2d = {
+	      position: this.position instanceof Vector2d,
+	      rotate: this.rotate instanceof Vector2d,
+	      scale: this.scale instanceof Vector2d
+	    };
+	    if (!isVector2d.position || !isVector2d.rotate || !isVector2d.rotate) {
+	      throw new TypeError;
+	    }
+	  }
+
+	  return Transform;
+
+	})(Component);
+
+	module.exports = Transform;
+
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Component, Entity,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	Entity = __webpack_require__(10);
+
+	Component = (function(superClass) {
+	  extend(Component, superClass);
+
+	  function Component() {
+	    return Component.__super__.constructor.apply(this, arguments);
+	  }
+
+	  return Component;
+
+	})(Entity);
+
+	module.exports = Component;
+
+
+/***/ },
+/* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Component, Resource, Sprite, Vector2d, canvas, context, resource,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	Component = __webpack_require__(18);
 
 	Vector2d = __webpack_require__(6);
 
@@ -785,7 +930,9 @@
 
 	resource = Resource.getInstance();
 
-	Sprite = (function() {
+	Sprite = (function(superClass) {
+	  extend(Sprite, superClass);
+
 	  function Sprite(options) {
 	    var ref, ref1, ref2;
 	    this.width = (ref = options.width) != null ? ref : 0, this.height = (ref1 = options.height) != null ? ref1 : 0, this.origin = (ref2 = options.origin) != null ? ref2 : new Vector2d, this.image = options.image;
@@ -841,84 +988,9 @@
 
 	  return Sprite;
 
-	})();
+	})(Component);
 
 	module.exports = Sprite;
-
-
-/***/ },
-/* 13 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Sprite, Vector2d, rudderSprite;
-
-	Sprite = __webpack_require__(12);
-
-	Vector2d = __webpack_require__(6);
-
-	rudderSprite = new Sprite({
-	  width: 400,
-	  height: 400,
-	  image: 'rudder.png'
-	});
-
-	rudderSprite.setOriginCenter();
-
-	module.exports = rudderSprite;
-
-
-/***/ },
-/* 14 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Sprite, Vector2d, wheelSprite;
-
-	Sprite = __webpack_require__(12);
-
-	Vector2d = __webpack_require__(6);
-
-	wheelSprite = new Sprite({
-	  width: 15,
-	  height: 8,
-	  image: 'wheel.png'
-	});
-
-	wheelSprite.setOriginCenter();
-
-	module.exports = wheelSprite;
-
-
-/***/ },
-/* 15 */
-/***/ function(module, exports) {
-
-	module.exports = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
-	  window.setTimeout(callback, 1000 / 60);
-	};
-
-
-/***/ },
-/* 16 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Actor, Entity,
-	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-	  hasProp = {}.hasOwnProperty;
-
-	Entity = __webpack_require__(10);
-
-	Actor = (function(superClass) {
-	  extend(Actor, superClass);
-
-	  function Actor() {
-	    return Actor.__super__.constructor.apply(this, arguments);
-	  }
-
-	  return Actor;
-
-	})(Entity);
-
-	module.exports = Actor;
 
 
 /***/ }
