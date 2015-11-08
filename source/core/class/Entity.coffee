@@ -4,7 +4,7 @@ class Entity
 
   create: ->
 
-  step: ->
+  update: ->
 
   draw: ->
 

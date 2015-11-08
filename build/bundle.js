@@ -574,7 +574,7 @@
 /* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Scene, Sprite, SpriteRenderer, main, player, playerSprite, playerSpriteRenderer;
+	var Scene, Sprite, SpriteRenderer, main, player, playerSprite;
 
 	Scene = __webpack_require__(8);
 
@@ -586,17 +586,11 @@
 
 	player = main.addActor();
 
-	playerSprite = new Sprite({
-	  width: 77,
-	  height: 32,
-	  image: 'player.png'
-	});
+	playerSprite = __webpack_require__(11);
 
-	playerSpriteRenderer = new SpriteRenderer({
+	player.addComponent(SpriteRenderer, {
 	  sprite: playerSprite
 	});
-
-	player.addComponent(playerSpriteRenderer);
 
 	module.exports = main;
 
@@ -642,7 +636,7 @@
 
 	  Entity.prototype.create = function() {};
 
-	  Entity.prototype.step = function() {};
+	  Entity.prototype.update = function() {};
 
 	  Entity.prototype.draw = function() {};
 
@@ -654,7 +648,27 @@
 
 
 /***/ },
-/* 11 */,
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Sprite, Vector2d, playerSprite;
+
+	Sprite = __webpack_require__(12);
+
+	Vector2d = __webpack_require__(6);
+
+	playerSprite = new Sprite({
+	  width: 77,
+	  height: 32,
+	  image: 'player.png'
+	});
+
+	playerSprite.setOriginCenter();
+
+	module.exports = playerSprite;
+
+
+/***/ },
 /* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -772,16 +786,19 @@
 	  Actor.prototype.components = [];
 
 	  function Actor() {
-	    var transform;
-	    transform = new Transform;
-	    this.addComponent(transform);
+	    this.addComponent(Transform);
 	  }
 
-	  Actor.prototype.addComponent = function(component) {
+	  Actor.prototype.addComponent = function(componentClass, options) {
+	    var component;
+	    if (options == null) {
+	      options = {};
+	    }
+	    component = new componentClass;
 	    if (!(component instanceof Component)) {
 	      throw new TypeError;
 	    }
-	    component.addParent(this);
+	    component.create(this, options);
 	    return this.components.push(component);
 	  };
 
@@ -811,10 +828,10 @@
 	    return Transform.__super__.constructor.apply(this, arguments);
 	  }
 
-	  Transform.prototype.create = function(options) {
+	  Transform.prototype.create = function(parent, options) {
 	    var ref, ref1, ref2;
 	    this.position = (ref = options.position) != null ? ref : new Vector2d, this.scale = (ref1 = options.scale) != null ? ref1 : new Vector2d(1, 1), this.rotate = (ref2 = options.rotate) != null ? ref2 : new Vector2d(1, 0);
-	    return this.parent.trasform = this;
+	    return parent.trasform = this;
 	  };
 
 	  return Transform;
@@ -837,20 +854,9 @@
 	Component = (function(superClass) {
 	  extend(Component, superClass);
 
-	  Component.prototype.parent = null;
-
-	  function Component(options1) {
-	    this.options = options1 != null ? options1 : {};
+	  function Component() {
+	    return Component.__super__.constructor.apply(this, arguments);
 	  }
-
-	  Component.prototype.addParent = function(parent) {
-	    if (parent != null) {
-	      this.parent = parent;
-	    }
-	    return this.create(this.options);
-	  };
-
-	  Component.prototype.create = function(options) {};
 
 	  return Component;
 
@@ -881,13 +887,13 @@
 	    return SpriteRenderer.__super__.constructor.apply(this, arguments);
 	  }
 
-	  SpriteRenderer.prototype.create = function(options) {
+	  SpriteRenderer.prototype.create = function(parent, options) {
 	    var ref;
 	    this.sprite = (ref = options.sprite) != null ? ref : null;
 	    if (!(this.sprite instanceof Sprite)) {
 	      throw new TypeError;
 	    }
-	    return this.parent.spriteRenderer = this;
+	    return parent.spriteRenderer = this;
 	  };
 
 	  return SpriteRenderer;

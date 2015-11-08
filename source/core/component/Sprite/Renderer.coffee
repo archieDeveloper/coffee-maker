@@ -8,11 +8,11 @@ Sprite = require 'core/class/Sprite'
 #
 class SpriteRenderer extends Renderer
 
-  create: (options)->
+  create: (parent, options)->
     {
       @sprite = null
     } = options
     if not (@sprite instanceof Sprite)
       throw new TypeError
-    @parent.spriteRenderer = @
+    parent.spriteRenderer = @
 module.exports = SpriteRenderer

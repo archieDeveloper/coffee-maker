@@ -11,13 +11,13 @@ class Actor extends Entity
   components: []
 
   constructor: ->
-    transform = new Transform
-    @addComponent transform
+    @addComponent Transform
 
-  addComponent: (component)->
+  addComponent: (componentClass, options = {})->
+    component = new componentClass
     if not (component instanceof Component)
       throw new TypeError
-    component.addParent @
+    component.create @, options
     @components.push component
 
 module.exports = Actor

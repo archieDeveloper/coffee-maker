@@ -4,11 +4,7 @@ Sprite = require 'core/class/Sprite'
 
 main = new Scene
 player = do main.addActor
-playerSprite = new Sprite
-  width: 77
-  height: 32
-  image: 'player.png'
-playerSpriteRenderer = new SpriteRenderer(sprite: playerSprite)
-player.addComponent(playerSpriteRenderer)
+playerSprite = require 'game/sprite/player'
+player.addComponent(SpriteRenderer, sprite: playerSprite)
 
 module.exports = main
