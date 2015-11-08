@@ -1,12 +1,14 @@
 Scene = require 'core/class/Scene'
-Vector2d = require 'core/class/Vector2d'
+SpriteRenderer = require 'core/component/Sprite/Renderer'
+Sprite = require 'core/class/Sprite'
 
-Player = require 'game/object/player'
+main = new Scene
+player = do main.addActor
+playerSprite = new Sprite
+  width: 77
+  height: 32
+  image: 'player.png'
+playerSpriteRenderer = new SpriteRenderer(sprite: playerSprite)
+player.addComponent(playerSpriteRenderer)
 
-class Main extends Scene
-
-  object: 
-    player: new Player
-
-  constructor: ->
-module.exports = Main
+module.exports = main

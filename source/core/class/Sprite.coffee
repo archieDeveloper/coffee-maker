@@ -1,4 +1,4 @@
-Component = require 'core/class/Component'
+Entity = require 'core/class/Entity'
 Vector2d  = require 'core/class/Vector2d'
 Resource  = require 'core/class/Resource'
 canvas    = require 'core/module/canvas'
@@ -14,7 +14,7 @@ resource  = Resource.getInstance()
 # @option options [Vector2d] origin Ценр спрайта
 # @option options [String] image Имя файла изображения
 #
-class Sprite extends Component
+class Sprite extends Entity
 
   constructor: (options)->
     {

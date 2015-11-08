@@ -10,12 +10,11 @@ resource = Resource.getInstance()
 # requireSprites = require.context 'game/sprite', true, /^\.\/.*\.(coffee|js)$/
 # sprites = requireSprites.keys().map requireSprites
 
-MainScene = require 'game/scene/main'
-currentScene = new MainScene
+mainScene = require 'game/scene/main'
 # requireScenes = require.context 'game/scene', true, /^\.\/.*\.(coffee|js)$/
 # scenes = requireScenes.keys().map requireScenes
 
-console.log currentScene
+console.log mainScene
 
 requestAnimationFrame = require 'core/module/requestAnimationFrame'
 

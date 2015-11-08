@@ -3,17 +3,14 @@ Vector2d = require 'core/class/Vector2d'
 
 class Transform extends Component
 
-  constructor: (options)->
+  create: (options)->
     {
-      @position = new Vector2d 0, 0
-      @rotate   = new Vector2d 1, 0
+      @position = new Vector2d
       @scale    = new Vector2d 1, 1
+      @rotate   = new Vector2d 1, 0
     } = options
-    isVector2d =
-      position: @position instanceof Vector2d
-      rotate: @rotate instanceof Vector2d
-      scale: @scale instanceof Vector2d
-    if not isVector2d.position or not isVector2d.rotate or not isVector2d.rotate
-      throw new TypeError
+#    if not (@position instanceof Vector2d) or not (@rotate instanceof Vector2d) or not (@scale instanceof Vector2d)
+#      throw new TypeError
+    @parent.trasform = @
 
 module.exports = Transform

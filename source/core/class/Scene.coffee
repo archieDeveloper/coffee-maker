@@ -1,5 +1,14 @@
+Actor = require 'core/class/Actor'
+
 class Scene
 
-  object: {}
+  actors: []
+
+  constructor: ->
+
+  addActor: ()->
+    newActor = new Actor
+    @actors.push newActor
+    newActor
 
 module.exports = Scene
