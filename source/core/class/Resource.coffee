@@ -8,7 +8,7 @@ class Resource
   instance = null
 
   # @property [Object<Image>] Кэш изображений
-  resourceCache  = {}
+  resourceCache = {}
 
   # @property [Array<Function>] Набор функций которые нужно вызвать при загрузке ресурсов
   readyCallbacks = []
@@ -19,8 +19,7 @@ class Resource
   #
   # @return [Resource]
   @getInstance: ->
-    if not instance?
-      instance = new Resource
+    instance = new Resource if not instance?
     instance
 
   # Загрузить изображения
@@ -49,15 +48,14 @@ class Resource
   isReady: ->
     ready = true
     for k of resourceCache
-      if resourceCache.hasOwnProperty(k) and not resourceCache[k]
-        ready = false
+      ready = false if resourceCache.hasOwnProperty(k) and not resourceCache[k]
     ready
 
   # Добавляет функцию в список callback'оф
   #
   # @param [Function] func Callback который отработает как только закончится загрузка ресурсов
-  onReady: (func)->
-    readyCallbacks.push func
+  onReady: (callback)->
+    readyCallbacks.push callback
 
   # Получает изображение из кеша или подгружает
   #
@@ -71,13 +69,13 @@ class Resource
   #
   # @param [String] url Url до изображения
   loadImage = (url)->
-    img = new Image
-    img.onload = ->
-      resourceCache[url] = img
+    image = new Image
+    image.onload = ->
+      resourceCache[url] = image
       if do Resource::isReady
-        readyCallbacks.forEach (func)->
-          do func
+        readyCallbacks.forEach (callback)->
+          do callback
     resourceCache[url] = false
-    img.src = url
+    image.src = url
 
 module.exports = Resource

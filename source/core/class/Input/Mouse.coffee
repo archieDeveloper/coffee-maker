@@ -38,8 +38,7 @@ class Mouse
   #
   # @return [Mouse]
   @getInstance: ->
-    if not instance?
-      instance = new Mouse
+    instance = new Mouse if not instance?
     instance
 
   # Проверяет нажата ли указанная клавиша

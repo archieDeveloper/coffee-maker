@@ -6,9 +6,12 @@ class Scene
 
   constructor: ->
 
-  addActor: ()->
-    newActor = new Actor
-    @actors.push newActor
-    newActor
+  addActor: (actorClass, options = {})->
+    actor = new actorClass()
+    if not (actor instanceof Actor)
+      throw new TypeError
+    @actors.push actor
+    actor.create()
+    actor
 
 module.exports = Scene

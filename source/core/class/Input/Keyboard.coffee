@@ -13,26 +13,15 @@ class Keyboard
   instance = null
 
   constructor: ->
-    window.document.addEventListener 'keydown', (e)->
-      do e.preventDefault
-      resetUp e.keyCode
-      onPress e.keyCode
-      onDown e.keyCode
-    window.document.addEventListener 'keyup', (e)->
-      resetPress e.keyCode
-      resetDown e.keyCode
-      onUp e.keyCode
-    window.addEventListener 'blur', ->
-      do resetAll
+    do initEvents
 
   # Получить экзепляр самого себя
   #
   # @return [Keyboard]
   @getInstance: ->
-    if not instance?
-      instance = new Keyboard
+    instance = new Keyboard if not instance?
     instance
-  
+
   # Проверяет нажатие указанной клавиши
   #
   # @param [Number] code Код клавиши
@@ -47,7 +36,7 @@ class Keyboard
   #
   # @return [Boolean]
   isDown: (code)->
-    if downKeys[code]? and downKeys[code] is true
+    if downKeys[code]? and downKeys[code] is on
       downKeys[code] = 2
       true
     else
@@ -59,17 +48,38 @@ class Keyboard
   #
   # @return [Boolean]
   isUp: (code)->
-    if upKeys[code]? and upKeys[code] is true
+    if upKeys[code]? and upKeys[code] is on
       upKeys[code] = 2
       true
     else
       false
 
+  # Иницилизация событий
+  initEvents = ->
+    window.addEventListener 'keydown', keyDownEvent
+    window.addEventListener 'keyup', keyUpEvent
+    window.addEventListener 'blur', blurWindowEvent
+
+  # Событие нажатия клавиши
+  keyDownEvent = (e)->
+    do e.preventDefault
+    resetUp e.keyCode
+    onPress e.keyCode
+    onDown e.keyCode
+
+  # Событие отпускания клавиши
+  keyUpEvent = (e)->
+    resetPress e.keyCode
+    resetDown e.keyCode
+    onUp e.keyCode
+
+  # Сбрасываем все события при разфокусировки окна
+  blurWindowEvent = ->
+    do resetAll
+
   # Сбрасывает все события
   resetAll = ->
-    pressKeys = {}
-    downKeys  = {}
-    upKeys    = {}
+    [pressKeys, downKeys, upKeys] = [{}, {}, {}]
 
   # Сбрасывает событие поднятия указанной клвавиши
   #
@@ -93,20 +103,18 @@ class Keyboard
   #
   # @param [Number] keyCode Код клавиши
   onDown = (keyCode)->
-    if not downKeys[keyCode]?
-      downKeys[keyCode] = true
+    downKeys[keyCode] = on if not downKeys[keyCode]?
 
   # Устанавливает событие отпускания указанной клвавиши
   #
   # @param [Number] keyCode Код клавиши
   onUp = (keyCode)->
-    if not upKeys[keyCode]?
-      upKeys[keyCode] = true
+    upKeys[keyCode] = on if not upKeys[keyCode]?
 
   # Устанавливает событие нажатия указанной клвавиши
   #
   # @param [Number] keyCode Код клавиши
   onPress = (keyCode)->
-    pressKeys[keyCode] = true
+    pressKeys[keyCode] = on
 
 module.exports = Keyboard

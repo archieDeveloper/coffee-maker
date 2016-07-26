@@ -1,10 +1,10 @@
 Scene = require 'core/class/Scene'
-SpriteRenderer = require 'core/component/Sprite/Renderer'
-Sprite = require 'core/class/Sprite'
+Player = require 'game/actor/player2'
 
 main = new Scene
-player = do main.addActor
-playerSprite = require 'game/sprite/player'
-player.addComponent(SpriteRenderer, sprite: playerSprite)
+
+player = main.addActor Player
+console.log(player)
+
 
 module.exports = main

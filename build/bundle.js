@@ -44,377 +44,504 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Input, Resource, Vector2d, canvas, context, draw, gameLoop, init, input, lastTime, loadImage, mainScene, requestAnimationFrame, resource, step;
+	var Entity, e1, e2, e3, e4, mainScene;
 
-	Resource = __webpack_require__(1);
+	Entity = __webpack_require__(1);
 
-	Input = __webpack_require__(2);
+	mainScene = __webpack_require__(4);
 
-	Vector2d = __webpack_require__(6);
+	e1 = new Entity;
 
-	canvas = __webpack_require__(5);
+	e2 = new Entity;
 
-	context = canvas.getContext("2d");
+	e3 = new Entity;
 
-	input = Input.getInstance();
+	e4 = new Entity;
 
-	resource = Resource.getInstance();
 
-	mainScene = __webpack_require__(7);
+	/*
 
-	console.log(mainScene);
+	Resource = require 'core/class/Resource'
+	Input = require 'core/class/Input'
+	Vector2d = require 'core/class/Vector2d'
 
-	requestAnimationFrame = __webpack_require__(15);
+	canvas = require 'core/module/canvas'
+	context = canvas.getContext "2d"
+	input = Input.getInstance()
 
-	lastTime = Date.now();
+	resource = Resource.getInstance()
 
-	step = function() {
-	  var name, object, ref, results;
-	  ref = currentScene['object'];
-	  results = [];
-	  for (name in ref) {
-	    object = ref[name];
-	    results.push(object['step']());
-	  }
-	  return results;
-	};
+	 * requireSprites = require.context 'game/sprite', true, /^\.\/.*\.(coffee|js)$/
+	 * sprites = requireSprites.keys().map requireSprites
 
-	draw = function() {
-	  var name, object, ref, results;
-	  context.clearRect(0, 0, canvas.width, canvas.height);
-	  ref = currentScene['object'];
-	  results = [];
-	  for (name in ref) {
-	    object = ref[name];
-	    results.push(object['draw']());
-	  }
-	  return results;
-	};
+	mainScene = require 'game/scene/main'
+	 * requireScenes = require.context 'game/scene', true, /^\.\/.*\.(coffee|js)$/
+	 * scenes = requireScenes.keys().map requireScenes
 
-	gameLoop = function() {
-	  var dt, fps, now;
-	  now = Date.now();
-	  dt = (now - lastTime) / 1000.0;
-	  fps = 1000.0 / (now - lastTime);
-	  step();
-	  draw();
-	  context.fillStyle = "#000";
-	  context.font = "12pt Arial";
-	  context.fillText('fps: ' + Math.round(fps), 20, 20);
-	  lastTime = now;
-	  return requestAnimationFrame(gameLoop);
-	};
+	console.log mainScene
 
-	init = function() {
-	  canvas.width = 800;
-	  canvas.height = 600;
-	  document.body.appendChild(canvas);
-	  return gameLoop();
-	};
+	requestAnimationFrame = require 'core/module/requestAnimationFrame'
 
-	loadImage = function() {
-	  return resource.onReady(init());
-	};
+	lastTime = do Date.now
 
-	window.onload = loadImage;
+	step = ->
+	  for name, object of currentScene['object']
+	    do object['step']
+	draw = ->
+	  context.clearRect 0, 0, canvas.width, canvas.height
+	  for name, object of currentScene['object']
+	    do object['draw']
+
+	gameLoop = ->
+	  now = do Date.now
+	  dt = (now - lastTime) / 1000.0
+	  fps = 1000.0 / (now - lastTime)
+
+	 *  console.log(input.keyboard.isDown(87))
+
+	 *  do step
+	 *  do draw
+
+	  context.fillStyle = "#000"
+	  context.font = "12pt Arial"
+	  context.fillText 'fps: '+Math.round(fps), 20, 20
+
+	  lastTime = now
+	  requestAnimationFrame gameLoop
+
+	init = ->
+	  canvas.width = 800
+	  canvas.height = 600
+	  document.body.appendChild canvas
+
+	  cc = require('core/class/Component')
+	  console.log(new cc)
+	 *  do gameLoop
+
+	loadImage = ->
+	    resource.onReady do init
+
+	window.onload = loadImage
+	 */
 
 
 /***/ },
 /* 1 */
 /***/ function(module, exports) {
 
-	var Resource;
+	var Entity;
 
-	Resource = (function() {
-	  var getImage, instance, loadImage, readyCallbacks, resourceCache;
+	Entity = (function() {
+	  function Entity() {}
 
-	  instance = null;
+	  Entity.prototype.create = function() {};
 
-	  resourceCache = {};
+	  Entity.prototype.update = function() {};
 
-	  readyCallbacks = [];
+	  Entity.prototype.draw = function() {};
 
-	  function Resource() {}
-
-	  Resource.getInstance = function() {
-	    if (instance == null) {
-	      instance = new Resource;
-	    }
-	    return instance;
-	  };
-
-	  Resource.prototype.load = function(urlOrArr) {
-	    if (urlOrArr instanceof Array) {
-	      return urlOrArr.forEach(function(url) {
-	        return getImage(url);
-	      });
-	    } else {
-	      return getImage(urlOrArr);
-	    }
-	  };
-
-	  Resource.prototype.get = function(url) {
-	    return resourceCache[url];
-	  };
-
-	  Resource.prototype.isReady = function() {
-	    var k, ready;
-	    ready = true;
-	    for (k in resourceCache) {
-	      if (resourceCache.hasOwnProperty(k) && !resourceCache[k]) {
-	        ready = false;
-	      }
-	    }
-	    return ready;
-	  };
-
-	  Resource.prototype.onReady = function(func) {
-	    return readyCallbacks.push(func);
-	  };
-
-	  getImage = function(url) {
-	    return resourceCache[url] || loadImage(url);
-	  };
-
-	  loadImage = function(url) {
-	    var img;
-	    img = new Image;
-	    img.onload = function() {
-	      resourceCache[url] = img;
-	      if (Resource.prototype.isReady()) {
-	        return readyCallbacks.forEach(function(func) {
-	          return func();
-	        });
-	      }
-	    };
-	    resourceCache[url] = false;
-	    return img.src = url;
-	  };
-
-	  return Resource;
+	  return Entity;
 
 	})();
 
-	module.exports = Resource;
+	module.exports = Entity;
 
 
 /***/ },
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Input, Keyboard, Mouse;
+	//     uuid.js
+	//
+	//     Copyright (c) 2010-2012 Robert Kieffer
+	//     MIT License - http://opensource.org/licenses/mit-license.php
 
-	Keyboard = __webpack_require__(3);
+	// Unique ID creation requires a high quality random # generator.  We feature
+	// detect to determine the best RNG source, normalizing to a function that
+	// returns 128-bits of randomness, since that's what's usually required
+	var _rng = __webpack_require__(3);
 
-	Mouse = __webpack_require__(4);
+	// Maps for number <-> hex string conversion
+	var _byteToHex = [];
+	var _hexToByte = {};
+	for (var i = 0; i < 256; i++) {
+	  _byteToHex[i] = (i + 0x100).toString(16).substr(1);
+	  _hexToByte[_byteToHex[i]] = i;
+	}
 
-	Input = (function() {
-	  var instance;
+	// **`parse()` - Parse a UUID into it's component bytes**
+	function parse(s, buf, offset) {
+	  var i = (buf && offset) || 0, ii = 0;
 
-	  instance = null;
-
-	  Input.prototype.keyboard = Keyboard.getInstance();
-
-	  Input.prototype.mouse = Mouse.getInstance();
-
-	  function Input() {}
-
-	  Input.getInstance = function() {
-	    if (instance == null) {
-	      instance = new Input;
+	  buf = buf || [];
+	  s.toLowerCase().replace(/[0-9a-f]{2}/g, function(oct) {
+	    if (ii < 16) { // Don't overflow!
+	      buf[i + ii++] = _hexToByte[oct];
 	    }
-	    return instance;
-	  };
+	  });
 
-	  return Input;
+	  // Zero out remaining bytes if string was short
+	  while (ii < 16) {
+	    buf[i + ii++] = 0;
+	  }
 
-	})();
+	  return buf;
+	}
 
-	module.exports = Input;
+	// **`unparse()` - Convert UUID byte array (ala parse()) into a string**
+	function unparse(buf, offset) {
+	  var i = offset || 0, bth = _byteToHex;
+	  return  bth[buf[i++]] + bth[buf[i++]] +
+	          bth[buf[i++]] + bth[buf[i++]] + '-' +
+	          bth[buf[i++]] + bth[buf[i++]] + '-' +
+	          bth[buf[i++]] + bth[buf[i++]] + '-' +
+	          bth[buf[i++]] + bth[buf[i++]] + '-' +
+	          bth[buf[i++]] + bth[buf[i++]] +
+	          bth[buf[i++]] + bth[buf[i++]] +
+	          bth[buf[i++]] + bth[buf[i++]];
+	}
+
+	// **`v1()` - Generate time-based UUID**
+	//
+	// Inspired by https://github.com/LiosK/UUID.js
+	// and http://docs.python.org/library/uuid.html
+
+	// random #'s we need to init node and clockseq
+	var _seedBytes = _rng();
+
+	// Per 4.5, create and 48-bit node id, (47 random bits + multicast bit = 1)
+	var _nodeId = [
+	  _seedBytes[0] | 0x01,
+	  _seedBytes[1], _seedBytes[2], _seedBytes[3], _seedBytes[4], _seedBytes[5]
+	];
+
+	// Per 4.2.2, randomize (14 bit) clockseq
+	var _clockseq = (_seedBytes[6] << 8 | _seedBytes[7]) & 0x3fff;
+
+	// Previous uuid creation time
+	var _lastMSecs = 0, _lastNSecs = 0;
+
+	// See https://github.com/broofa/node-uuid for API details
+	function v1(options, buf, offset) {
+	  var i = buf && offset || 0;
+	  var b = buf || [];
+
+	  options = options || {};
+
+	  var clockseq = options.clockseq !== undefined ? options.clockseq : _clockseq;
+
+	  // UUID timestamps are 100 nano-second units since the Gregorian epoch,
+	  // (1582-10-15 00:00).  JSNumbers aren't precise enough for this, so
+	  // time is handled internally as 'msecs' (integer milliseconds) and 'nsecs'
+	  // (100-nanoseconds offset from msecs) since unix epoch, 1970-01-01 00:00.
+	  var msecs = options.msecs !== undefined ? options.msecs : new Date().getTime();
+
+	  // Per 4.2.1.2, use count of uuid's generated during the current clock
+	  // cycle to simulate higher resolution clock
+	  var nsecs = options.nsecs !== undefined ? options.nsecs : _lastNSecs + 1;
+
+	  // Time since last uuid creation (in msecs)
+	  var dt = (msecs - _lastMSecs) + (nsecs - _lastNSecs)/10000;
+
+	  // Per 4.2.1.2, Bump clockseq on clock regression
+	  if (dt < 0 && options.clockseq === undefined) {
+	    clockseq = clockseq + 1 & 0x3fff;
+	  }
+
+	  // Reset nsecs if clock regresses (new clockseq) or we've moved onto a new
+	  // time interval
+	  if ((dt < 0 || msecs > _lastMSecs) && options.nsecs === undefined) {
+	    nsecs = 0;
+	  }
+
+	  // Per 4.2.1.2 Throw error if too many uuids are requested
+	  if (nsecs >= 10000) {
+	    throw new Error('uuid.v1(): Can\'t create more than 10M uuids/sec');
+	  }
+
+	  _lastMSecs = msecs;
+	  _lastNSecs = nsecs;
+	  _clockseq = clockseq;
+
+	  // Per 4.1.4 - Convert from unix epoch to Gregorian epoch
+	  msecs += 12219292800000;
+
+	  // `time_low`
+	  var tl = ((msecs & 0xfffffff) * 10000 + nsecs) % 0x100000000;
+	  b[i++] = tl >>> 24 & 0xff;
+	  b[i++] = tl >>> 16 & 0xff;
+	  b[i++] = tl >>> 8 & 0xff;
+	  b[i++] = tl & 0xff;
+
+	  // `time_mid`
+	  var tmh = (msecs / 0x100000000 * 10000) & 0xfffffff;
+	  b[i++] = tmh >>> 8 & 0xff;
+	  b[i++] = tmh & 0xff;
+
+	  // `time_high_and_version`
+	  b[i++] = tmh >>> 24 & 0xf | 0x10; // include version
+	  b[i++] = tmh >>> 16 & 0xff;
+
+	  // `clock_seq_hi_and_reserved` (Per 4.2.2 - include variant)
+	  b[i++] = clockseq >>> 8 | 0x80;
+
+	  // `clock_seq_low`
+	  b[i++] = clockseq & 0xff;
+
+	  // `node`
+	  var node = options.node || _nodeId;
+	  for (var n = 0; n < 6; n++) {
+	    b[i + n] = node[n];
+	  }
+
+	  return buf ? buf : unparse(b);
+	}
+
+	// **`v4()` - Generate random UUID**
+
+	// See https://github.com/broofa/node-uuid for API details
+	function v4(options, buf, offset) {
+	  // Deprecated - 'format' argument, as supported in v1.2
+	  var i = buf && offset || 0;
+
+	  if (typeof(options) == 'string') {
+	    buf = options == 'binary' ? new Array(16) : null;
+	    options = null;
+	  }
+	  options = options || {};
+
+	  var rnds = options.random || (options.rng || _rng)();
+
+	  // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+	  rnds[6] = (rnds[6] & 0x0f) | 0x40;
+	  rnds[8] = (rnds[8] & 0x3f) | 0x80;
+
+	  // Copy bytes to buffer, if provided
+	  if (buf) {
+	    for (var ii = 0; ii < 16; ii++) {
+	      buf[i + ii] = rnds[ii];
+	    }
+	  }
+
+	  return buf || unparse(rnds);
+	}
+
+	// Export public API
+	var uuid = v4;
+	uuid.v1 = v1;
+	uuid.v4 = v4;
+	uuid.parse = parse;
+	uuid.unparse = unparse;
+
+	module.exports = uuid;
 
 
 /***/ },
 /* 3 */
 /***/ function(module, exports) {
 
-	var Keyboard;
+	/* WEBPACK VAR INJECTION */(function(global) {
+	var rng;
 
-	Keyboard = (function() {
-	  var downKeys, instance, onDown, onPress, onUp, pressKeys, resetAll, resetDown, resetPress, resetUp, upKeys;
+	if (global.crypto && crypto.getRandomValues) {
+	  // WHATWG crypto-based RNG - http://wiki.whatwg.org/wiki/Crypto
+	  // Moderately fast, high quality
+	  var _rnds8 = new Uint8Array(16);
+	  rng = function whatwgRNG() {
+	    crypto.getRandomValues(_rnds8);
+	    return _rnds8;
+	  };
+	}
 
-	  pressKeys = {};
-
-	  downKeys = {};
-
-	  upKeys = {};
-
-	  instance = null;
-
-	  function Keyboard() {
-	    window.document.addEventListener('keydown', function(e) {
-	      e.preventDefault();
-	      resetUp(e.keyCode);
-	      onPress(e.keyCode);
-	      return onDown(e.keyCode);
-	    });
-	    window.document.addEventListener('keyup', function(e) {
-	      resetPress(e.keyCode);
-	      resetDown(e.keyCode);
-	      return onUp(e.keyCode);
-	    });
-	    window.addEventListener('blur', function() {
-	      return resetAll();
-	    });
-	  }
-
-	  Keyboard.getInstance = function() {
-	    if (instance == null) {
-	      instance = new Keyboard;
+	if (!rng) {
+	  // Math.random()-based (RNG)
+	  //
+	  // If all else fails, use Math.random().  It's fast, but is of unspecified
+	  // quality.
+	  var  _rnds = new Array(16);
+	  rng = function() {
+	    for (var i = 0, r; i < 16; i++) {
+	      if ((i & 0x03) === 0) r = Math.random() * 0x100000000;
+	      _rnds[i] = r >>> ((i & 0x03) << 3) & 0xff;
 	    }
-	    return instance;
+
+	    return _rnds;
 	  };
+	}
 
-	  Keyboard.prototype.isPressed = function(code) {
-	    return pressKeys[code] != null;
-	  };
+	module.exports = rng;
 
-	  Keyboard.prototype.isDown = function(code) {
-	    if ((downKeys[code] != null) && downKeys[code] === true) {
-	      downKeys[code] = 2;
-	      return true;
-	    } else {
-	      return false;
-	    }
-	  };
 
-	  Keyboard.prototype.isUp = function(code) {
-	    if ((upKeys[code] != null) && upKeys[code] === true) {
-	      upKeys[code] = 2;
-	      return true;
-	    } else {
-	      return false;
-	    }
-	  };
-
-	  resetAll = function() {
-	    pressKeys = {};
-	    downKeys = {};
-	    return upKeys = {};
-	  };
-
-	  resetUp = function(keyCode) {
-	    return delete upKeys[keyCode];
-	  };
-
-	  resetDown = function(keyCode) {
-	    return delete downKeys[keyCode];
-	  };
-
-	  resetPress = function(keyCode) {
-	    return delete pressKeys[keyCode];
-	  };
-
-	  onDown = function(keyCode) {
-	    if (downKeys[keyCode] == null) {
-	      return downKeys[keyCode] = true;
-	    }
-	  };
-
-	  onUp = function(keyCode) {
-	    if (upKeys[keyCode] == null) {
-	      return upKeys[keyCode] = true;
-	    }
-	  };
-
-	  onPress = function(keyCode) {
-	    return pressKeys[keyCode] = true;
-	  };
-
-	  return Keyboard;
-
-	})();
-
-	module.exports = Keyboard;
-
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Mouse, Vector2d, canvas;
+	var Player, Scene, main, player;
 
-	canvas = __webpack_require__(5);
+	Scene = __webpack_require__(5);
 
-	Vector2d = __webpack_require__(6);
+	Player = __webpack_require__(16);
 
-	Mouse = (function() {
-	  var instance, mouseDown, mousePress, mouseUp;
+	main = new Scene;
 
-	  mousePress = {};
+	player = main.addActor(Player);
 
-	  mouseDown = {};
+	console.log(player);
 
-	  mouseUp = {};
-
-	  instance = null;
-
-	  Mouse.prototype.position = new Vector2d(0, 0);
-
-	  function Mouse() {
-	    canvas.addEventListener('mousemove', (function(_this) {
-	      return function(e) {
-	        _this.position.x = e.offsetX == null ? e.layerX : e.offsetX;
-	        return _this.position.y = e.offsetY == null ? e.layerY : e.offsetY;
-	      };
-	    })(this));
-	    canvas.addEventListener('mouseDown', function(e) {
-	      mousePress[e.which] = true;
-	      return mouseDown[e.which] = true;
-	    });
-	    canvas.addEventListener('mouseUp', function(e) {
-	      delete mousePress[e.which];
-	      return mouseUp[e.which] = true;
-	    });
-	    canvas.oncontextmenu = function() {
-	      return false;
-	    };
-	  }
-
-	  Mouse.getInstance = function() {
-	    if (instance == null) {
-	      instance = new Mouse;
-	    }
-	    return instance;
-	  };
-
-	  Mouse.prototype.isPressed = function(code) {
-	    return mousePress[code] != null;
-	  };
-
-	  Mouse.prototype.isDown = function(code) {
-	    return mouseDown[code] != null;
-	  };
-
-	  Mouse.prototype.isUp = function(code) {
-	    return mouseUp[code] != null;
-	  };
-
-	  return Mouse;
-
-	})();
-
-	module.exports = Mouse;
+	module.exports = main;
 
 
 /***/ },
 /* 5 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports = document.createElement("canvas");
+	var Actor, Scene;
+
+	Actor = __webpack_require__(6);
+
+	Scene = (function() {
+	  Scene.prototype.actors = [];
+
+	  function Scene() {}
+
+	  Scene.prototype.addActor = function(actorClass, options) {
+	    var actor;
+	    if (options == null) {
+	      options = {};
+	    }
+	    actor = new actorClass();
+	    if (!(actor instanceof Actor)) {
+	      throw new TypeError;
+	    }
+	    this.actors.push(actor);
+	    actor.create();
+	    return actor;
+	  };
+
+	  return Scene;
+
+	})();
+
+	module.exports = Scene;
 
 
 /***/ },
 /* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Actor, Component, Transform,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	Component = __webpack_require__(7);
+
+	Transform = __webpack_require__(8);
+
+	Actor = (function(superClass) {
+	  extend(Actor, superClass);
+
+	  Actor.prototype.parent = null;
+
+	  Actor.prototype.children = null;
+
+	  function Actor() {
+	    this.addComponent(Transform);
+	  }
+
+	  return Actor;
+
+	})(Component);
+
+	module.exports = Actor;
+
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Component, Entity, uuid,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	Entity = __webpack_require__(1);
+
+	uuid = __webpack_require__(2);
+
+	Component = (function(superClass) {
+	  extend(Component, superClass);
+
+	  Component.prototype.uuid = null;
+
+	  Component.prototype.components = null;
+
+	  function Component(parent) {
+	    this.parent = parent;
+	  }
+
+	  Component.prototype.addComponent = function(componentClass, options) {
+	    var component;
+	    if (options == null) {
+	      options = {};
+	    }
+	    component = new componentClass(this);
+	    if (!(component instanceof Component)) {
+	      throw new TypeError;
+	    }
+	    component['uuid'] = uuid.v4();
+	    component.create(this, options);
+	    if (this.components == null) {
+	      this.components = {};
+	    }
+	    return this.components[component['uuid']] = component;
+	  };
+
+	  Component.prototype.getComponents = function() {
+	    return console.log(this.components);
+	  };
+
+	  return Component;
+
+	})(Entity);
+
+	module.exports = Component;
+
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Component, Transform, Vector2d,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
+
+	Component = __webpack_require__(7);
+
+	Vector2d = __webpack_require__(9);
+
+	Transform = (function(superClass) {
+	  extend(Transform, superClass);
+
+	  function Transform() {
+	    return Transform.__super__.constructor.apply(this, arguments);
+	  }
+
+	  Transform.prototype.create = function(parent, options) {
+	    var ref, ref1, ref2;
+	    this.position = (ref = options.position) != null ? ref : new Vector2d, this.scale = (ref1 = options.scale) != null ? ref1 : new Vector2d(1, 1), this.rotate = (ref2 = options.rotate) != null ? ref2 : new Vector2d(1, 0);
+	    return parent.trasform = this;
+	  };
+
+	  return Transform;
+
+	})(Component);
+
+	module.exports = Transform;
+
+
+/***/ },
+/* 9 */
 /***/ function(module, exports) {
 
 	var Vector2d;
@@ -571,101 +698,62 @@
 
 
 /***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Scene, Sprite, SpriteRenderer, main, player, playerSprite;
-
-	Scene = __webpack_require__(8);
-
-	SpriteRenderer = __webpack_require__(22);
-
-	Sprite = __webpack_require__(12);
-
-	main = new Scene;
-
-	player = main.addActor();
-
-	playerSprite = __webpack_require__(11);
-
-	player.addComponent(SpriteRenderer, {
-	  sprite: playerSprite
-	});
-
-	module.exports = main;
-
-
-/***/ },
-/* 8 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Actor, Scene;
-
-	Actor = __webpack_require__(16);
-
-	Scene = (function() {
-	  Scene.prototype.actors = [];
-
-	  function Scene() {}
-
-	  Scene.prototype.addActor = function() {
-	    var newActor;
-	    newActor = new Actor;
-	    this.actors.push(newActor);
-	    return newActor;
-	  };
-
-	  return Scene;
-
-	})();
-
-	module.exports = Scene;
-
-
-/***/ },
-/* 9 */,
 /* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Entity, Vector2d;
+	var Renderer, Sprite, SpriteRenderer,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
 
-	Vector2d = __webpack_require__(6);
+	Renderer = __webpack_require__(11);
 
-	Entity = (function() {
-	  function Entity() {}
+	Sprite = __webpack_require__(12);
 
-	  Entity.prototype.create = function() {};
+	SpriteRenderer = (function(superClass) {
+	  extend(SpriteRenderer, superClass);
 
-	  Entity.prototype.update = function() {};
+	  function SpriteRenderer() {
+	    return SpriteRenderer.__super__.constructor.apply(this, arguments);
+	  }
 
-	  Entity.prototype.draw = function() {};
+	  SpriteRenderer.prototype.create = function(parent, options) {
+	    var ref;
+	    this.sprite = (ref = options.sprite) != null ? ref : null;
+	    if (!(this.sprite instanceof Sprite)) {
+	      throw new TypeError;
+	    }
+	    return parent.spriteRenderer = this;
+	  };
 
-	  return Entity;
+	  return SpriteRenderer;
 
-	})();
+	})(Renderer);
 
-	module.exports = Entity;
+	module.exports = SpriteRenderer;
 
 
 /***/ },
 /* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Sprite, Vector2d, playerSprite;
+	var Component, Renderer,
+	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+	  hasProp = {}.hasOwnProperty;
 
-	Sprite = __webpack_require__(12);
+	Component = __webpack_require__(7);
 
-	Vector2d = __webpack_require__(6);
+	Renderer = (function(superClass) {
+	  extend(Renderer, superClass);
 
-	playerSprite = new Sprite({
-	  width: 77,
-	  height: 32,
-	  image: 'player.png'
-	});
+	  function Renderer() {
+	    return Renderer.__super__.constructor.apply(this, arguments);
+	  }
 
-	playerSprite.setOriginCenter();
+	  return Renderer;
 
-	module.exports = playerSprite;
+	})(Component);
+
+	module.exports = Renderer;
 
 
 /***/ },
@@ -676,13 +764,13 @@
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
-	Entity = __webpack_require__(10);
+	Entity = __webpack_require__(1);
 
-	Vector2d = __webpack_require__(6);
+	Vector2d = __webpack_require__(9);
 
-	Resource = __webpack_require__(1);
+	Resource = __webpack_require__(13);
 
-	canvas = __webpack_require__(5);
+	canvas = __webpack_require__(14);
 
 	context = canvas.getContext('2d');
 
@@ -752,179 +840,370 @@
 
 
 /***/ },
-/* 13 */,
-/* 14 */,
-/* 15 */
+/* 13 */
 /***/ function(module, exports) {
 
-	module.exports = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
-	  window.setTimeout(callback, 1000 / 60);
-	};
+	var Resource;
+
+	Resource = (function() {
+	  var getImage, instance, loadImage, readyCallbacks, resourceCache;
+
+	  instance = null;
+
+	  resourceCache = {};
+
+	  readyCallbacks = [];
+
+	  function Resource() {}
+
+	  Resource.getInstance = function() {
+	    if (instance == null) {
+	      instance = new Resource;
+	    }
+	    return instance;
+	  };
+
+	  Resource.prototype.load = function(urlOrArr) {
+	    if (urlOrArr instanceof Array) {
+	      return urlOrArr.forEach(function(url) {
+	        return getImage(url);
+	      });
+	    } else {
+	      return getImage(urlOrArr);
+	    }
+	  };
+
+	  Resource.prototype.get = function(url) {
+	    return resourceCache[url];
+	  };
+
+	  Resource.prototype.isReady = function() {
+	    var k, ready;
+	    ready = true;
+	    for (k in resourceCache) {
+	      if (resourceCache.hasOwnProperty(k) && !resourceCache[k]) {
+	        ready = false;
+	      }
+	    }
+	    return ready;
+	  };
+
+	  Resource.prototype.onReady = function(callback) {
+	    return readyCallbacks.push(callback);
+	  };
+
+	  getImage = function(url) {
+	    return resourceCache[url] || loadImage(url);
+	  };
+
+	  loadImage = function(url) {
+	    var image;
+	    image = new Image;
+	    image.onload = function() {
+	      resourceCache[url] = image;
+	      if (Resource.prototype.isReady()) {
+	        return readyCallbacks.forEach(function(callback) {
+	          return callback();
+	        });
+	      }
+	    };
+	    resourceCache[url] = false;
+	    return image.src = url;
+	  };
+
+	  return Resource;
+
+	})();
+
+	module.exports = Resource;
+
+
+/***/ },
+/* 14 */
+/***/ function(module, exports) {
+
+	module.exports = document.createElement("canvas");
+
+
+/***/ },
+/* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Sprite, Vector2d, playerSprite;
+
+	Sprite = __webpack_require__(12);
+
+	Vector2d = __webpack_require__(9);
+
+	playerSprite = new Sprite({
+	  width: 77,
+	  height: 32,
+	  image: 'player.png'
+	});
+
+	playerSprite.setOriginCenter();
+
+	module.exports = playerSprite;
 
 
 /***/ },
 /* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Actor, Component, Entity, Transform,
+	var Actor, Input, Player2, SpriteRenderer, Vector2d, input,
 	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
 	  hasProp = {}.hasOwnProperty;
 
-	Entity = __webpack_require__(10);
+	Actor = __webpack_require__(6);
 
-	Component = __webpack_require__(18);
+	Input = __webpack_require__(17);
 
-	Transform = __webpack_require__(17);
+	Vector2d = __webpack_require__(9);
 
-	Actor = (function(superClass) {
-	  extend(Actor, superClass);
+	SpriteRenderer = __webpack_require__(10);
 
-	  Actor.prototype.parent = null;
+	input = Input.getInstance();
 
-	  Actor.prototype.children = null;
+	Player2 = (function(superClass) {
+	  extend(Player2, superClass);
 
-	  Actor.prototype.components = [];
-
-	  function Actor() {
-	    this.addComponent(Transform);
+	  function Player2() {
+	    return Player2.__super__.constructor.apply(this, arguments);
 	  }
 
-	  Actor.prototype.addComponent = function(componentClass, options) {
-	    var component;
-	    if (options == null) {
-	      options = {};
-	    }
-	    component = new componentClass;
-	    if (!(component instanceof Component)) {
-	      throw new TypeError;
-	    }
-	    component.create(this, options);
-	    return this.components.push(component);
+	  Player2.prototype.create = function() {
+	    this.playerSprite = __webpack_require__(15);
+	    return this.addComponent(SpriteRenderer, {
+	      sprite: this.playerSprite
+	    });
 	  };
 
-	  return Actor;
+	  Player2.prototype.update = function() {};
 
-	})(Entity);
+	  Player2.prototype.draw = function() {};
 
-	module.exports = Actor;
+	  return Player2;
+
+	})(Actor);
+
+	module.exports = Player2;
 
 
 /***/ },
 /* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Component, Transform, Vector2d,
-	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-	  hasProp = {}.hasOwnProperty;
+	var Input, Keyboard, Mouse;
 
-	Component = __webpack_require__(18);
+	Keyboard = __webpack_require__(18);
 
-	Vector2d = __webpack_require__(6);
+	Mouse = __webpack_require__(19);
 
-	Transform = (function(superClass) {
-	  extend(Transform, superClass);
+	Input = (function() {
+	  var instance;
 
-	  function Transform() {
-	    return Transform.__super__.constructor.apply(this, arguments);
-	  }
+	  instance = null;
 
-	  Transform.prototype.create = function(parent, options) {
-	    var ref, ref1, ref2;
-	    this.position = (ref = options.position) != null ? ref : new Vector2d, this.scale = (ref1 = options.scale) != null ? ref1 : new Vector2d(1, 1), this.rotate = (ref2 = options.rotate) != null ? ref2 : new Vector2d(1, 0);
-	    return parent.trasform = this;
+	  Input.prototype.keyboard = Keyboard.getInstance();
+
+	  Input.prototype.mouse = Mouse.getInstance();
+
+	  function Input() {}
+
+	  Input.getInstance = function() {
+	    if (instance == null) {
+	      instance = new Input;
+	    }
+	    return instance;
 	  };
 
-	  return Transform;
+	  return Input;
 
-	})(Component);
+	})();
 
-	module.exports = Transform;
+	module.exports = Input;
 
 
 /***/ },
 /* 18 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	var Component, Entity,
-	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-	  hasProp = {}.hasOwnProperty;
+	var Keyboard;
 
-	Entity = __webpack_require__(10);
+	Keyboard = (function() {
+	  var blurWindowEvent, downKeys, initEvents, instance, keyDownEvent, keyUpEvent, onDown, onPress, onUp, pressKeys, resetAll, resetDown, resetPress, resetUp, upKeys;
 
-	Component = (function(superClass) {
-	  extend(Component, superClass);
+	  pressKeys = {};
 
-	  function Component() {
-	    return Component.__super__.constructor.apply(this, arguments);
+	  downKeys = {};
+
+	  upKeys = {};
+
+	  instance = null;
+
+	  function Keyboard() {
+	    initEvents();
 	  }
 
-	  return Component;
-
-	})(Entity);
-
-	module.exports = Component;
-
-
-/***/ },
-/* 19 */,
-/* 20 */,
-/* 21 */,
-/* 22 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Renderer, Sprite, SpriteRenderer,
-	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-	  hasProp = {}.hasOwnProperty;
-
-	Renderer = __webpack_require__(23);
-
-	Sprite = __webpack_require__(12);
-
-	SpriteRenderer = (function(superClass) {
-	  extend(SpriteRenderer, superClass);
-
-	  function SpriteRenderer() {
-	    return SpriteRenderer.__super__.constructor.apply(this, arguments);
-	  }
-
-	  SpriteRenderer.prototype.create = function(parent, options) {
-	    var ref;
-	    this.sprite = (ref = options.sprite) != null ? ref : null;
-	    if (!(this.sprite instanceof Sprite)) {
-	      throw new TypeError;
+	  Keyboard.getInstance = function() {
+	    if (instance == null) {
+	      instance = new Keyboard;
 	    }
-	    return parent.spriteRenderer = this;
+	    return instance;
 	  };
 
-	  return SpriteRenderer;
+	  Keyboard.prototype.isPressed = function(code) {
+	    return pressKeys[code] != null;
+	  };
 
-	})(Renderer);
+	  Keyboard.prototype.isDown = function(code) {
+	    if ((downKeys[code] != null) && downKeys[code] === true) {
+	      downKeys[code] = 2;
+	      return true;
+	    } else {
+	      return false;
+	    }
+	  };
 
-	module.exports = SpriteRenderer;
+	  Keyboard.prototype.isUp = function(code) {
+	    if ((upKeys[code] != null) && upKeys[code] === true) {
+	      upKeys[code] = 2;
+	      return true;
+	    } else {
+	      return false;
+	    }
+	  };
+
+	  initEvents = function() {
+	    window.addEventListener('keydown', keyDownEvent);
+	    window.addEventListener('keyup', keyUpEvent);
+	    return window.addEventListener('blur', blurWindowEvent);
+	  };
+
+	  keyDownEvent = function(e) {
+	    e.preventDefault();
+	    resetUp(e.keyCode);
+	    onPress(e.keyCode);
+	    return onDown(e.keyCode);
+	  };
+
+	  keyUpEvent = function(e) {
+	    resetPress(e.keyCode);
+	    resetDown(e.keyCode);
+	    return onUp(e.keyCode);
+	  };
+
+	  blurWindowEvent = function() {
+	    return resetAll();
+	  };
+
+	  resetAll = function() {
+	    var ref;
+	    return ref = [{}, {}, {}], pressKeys = ref[0], downKeys = ref[1], upKeys = ref[2], ref;
+	  };
+
+	  resetUp = function(keyCode) {
+	    return delete upKeys[keyCode];
+	  };
+
+	  resetDown = function(keyCode) {
+	    return delete downKeys[keyCode];
+	  };
+
+	  resetPress = function(keyCode) {
+	    return delete pressKeys[keyCode];
+	  };
+
+	  onDown = function(keyCode) {
+	    if (downKeys[keyCode] == null) {
+	      return downKeys[keyCode] = true;
+	    }
+	  };
+
+	  onUp = function(keyCode) {
+	    if (upKeys[keyCode] == null) {
+	      return upKeys[keyCode] = true;
+	    }
+	  };
+
+	  onPress = function(keyCode) {
+	    return pressKeys[keyCode] = true;
+	  };
+
+	  return Keyboard;
+
+	})();
+
+	module.exports = Keyboard;
 
 
 /***/ },
-/* 23 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Component, Renderer,
-	  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-	  hasProp = {}.hasOwnProperty;
+	var Mouse, Vector2d, canvas;
 
-	Component = __webpack_require__(18);
+	canvas = __webpack_require__(14);
 
-	Renderer = (function(superClass) {
-	  extend(Renderer, superClass);
+	Vector2d = __webpack_require__(9);
 
-	  function Renderer() {
-	    return Renderer.__super__.constructor.apply(this, arguments);
+	Mouse = (function() {
+	  var instance, mouseDown, mousePress, mouseUp;
+
+	  mousePress = {};
+
+	  mouseDown = {};
+
+	  mouseUp = {};
+
+	  instance = null;
+
+	  Mouse.prototype.position = new Vector2d(0, 0);
+
+	  function Mouse() {
+	    canvas.addEventListener('mousemove', (function(_this) {
+	      return function(e) {
+	        _this.position.x = e.offsetX == null ? e.layerX : e.offsetX;
+	        return _this.position.y = e.offsetY == null ? e.layerY : e.offsetY;
+	      };
+	    })(this));
+	    canvas.addEventListener('mouseDown', function(e) {
+	      mousePress[e.which] = true;
+	      return mouseDown[e.which] = true;
+	    });
+	    canvas.addEventListener('mouseUp', function(e) {
+	      delete mousePress[e.which];
+	      return mouseUp[e.which] = true;
+	    });
+	    canvas.oncontextmenu = function() {
+	      return false;
+	    };
 	  }
 
-	  return Renderer;
+	  Mouse.getInstance = function() {
+	    if (instance == null) {
+	      instance = new Mouse;
+	    }
+	    return instance;
+	  };
 
-	})(Component);
+	  Mouse.prototype.isPressed = function(code) {
+	    return mousePress[code] != null;
+	  };
 
-	module.exports = Renderer;
+	  Mouse.prototype.isDown = function(code) {
+	    return mouseDown[code] != null;
+	  };
+
+	  Mouse.prototype.isUp = function(code) {
+	    return mouseUp[code] != null;
+	  };
+
+	  return Mouse;
+
+	})();
+
+	module.exports = Mouse;
 
 
 /***/ }
